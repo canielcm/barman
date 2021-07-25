@@ -1,13 +1,99 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Open Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.btn-primary {
+  background-color: rgb(57, 80, 184) !important;
+  border-color: rgb(57, 80, 184);
+}
+.btn-outline-primary {
+  border-color: rgb(57, 80, 184);
+  color: rgb(57, 80, 184);
+}
+.btn-primary:hover {
+  background-color: rgb(47, 80, 228) !important;
+}
+.btn-outline-primary:hover {
+  background-color: rgb(39, 72, 216) !important;
+  border-color: rgb(39, 72, 216);
+  color: white;
+}
+.btn-success {
+  background-color: rgb(7, 202, 7);
+  border-color: rgb(7, 202, 7);
+}
+.btn-outline-success {
+  border-color: rgb(7, 202, 7);
+  color: rgb(7, 202, 7);
+}
+
+.btn-success:hover {
+  background-color: rgb(9, 214, 9);
+}
+.btn-outline-success:hover {
+  color: white;
+  background-color: rgb(7, 202, 7);
+  border-color: rgb(7, 202, 7);
+}
+
+.btn-danger {
+  border-color: #e12c2c;
+  background-color: #e12c2c;
+}
+.btn-danger:hover {
+  background-color: #ee2626;
+}
+
+.btn-outline-danger {
+  border-color: #e12c2c;
+  color: #e12c2c;
+}
+
+.btn-outline-danger:hover {
+  background-color: #e12c2c;
+  color: white;
+}
+
+.btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(150, 150, 150);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6d6d6d;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: #999999;
+}
+
+::-webkit-scrollbar-track {
+  background: #e1e1e1;
+}
+
+::-webkit-scrollbar-track:hover,
+::-webkit-scrollbar-track:active {
+  background: #d4d4d4;
+}
+
+a{
+  text-decoration: none;
 }

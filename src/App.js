@@ -1,12 +1,29 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Home from "./pages/index";
+import NotFound from "./pages/NotFound";
+import Addnew from "./pages/addnew";
+import RegisterPage from "./pages/RegisterPage";
+import DrinkInfo from "./pages/DrinkInfo"
+import { LoginModal } from "./components";
+
+import { AuthProvider } from "./context/AuthContext";
+import { DrinkMethodsProvider } from "./context/DrinkMethodsContext";
 function App() {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/" component={Home} />
-      </Switch>
-    </BrowserRouter>
+    <AuthProvider>
+      <DrinkMethodsProvider>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/add" component={Addnew} />
+            <Route exact path="/register" component={RegisterPage}></Route>
+            <Route exact path="/drink/:id" component={DrinkInfo}></Route>
+            <Route component={NotFound}></Route>
+          </Switch>
+          <LoginModal />
+        </BrowserRouter>
+      </DrinkMethodsProvider>
+    </AuthProvider>
   );
 }
 export default App;

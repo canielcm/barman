@@ -1,0 +1,22 @@
+.StarRatingDiv{
+    font-size: 20px;
+}
+.StarRatingDiv .starBox{
+    position: relative;
+    z-index: 1;
+    color: rgb(235, 195, 19);
+}
+.StarRatingDiv .checkContainer{
+    height: 100%;
+    z-index: 2;
+    top: auto;
+}
+.StarRatingDiv .checkContainer input[type="radio"]{
+    height: 100%;
+    opacity: 0;
+}
+.StarRatingDiv .star{
+    position: absolute;
+    z-index: -1 ;
+    top: auto;
+}

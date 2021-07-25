@@ -1,0 +1,9 @@
+.FooterDiv .smediacontainer .FooterIcon {
+  padding: 0px;
+  color: rgb(128, 126, 126);
+  font-size: 50px;
+}
+
+.FooterDiv .smediacontainer .FooterIcon:hover {
+  color: rgb(172, 169, 169);
+}

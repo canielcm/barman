@@ -1,0 +1,60 @@
+.DrinkCardDiv {
+  margin-bottom: 10px;
+  width: auto;
+}
+.DrinkCardDiv .card{
+  border: 4px solid white;
+}
+.DrinkCardDiv .card:hover{
+  border-color: rgba(0, 0, 0, 0.075) !important ;
+  transition: border-color 0.3s linear;
+}
+.DrinkCardDiv .card .cardImg{
+  width: 140px;
+  height: auto;
+  margin: 0px auto;
+}
+
+.DrinkCardDiv .card .is {
+  width: 140px;
+  height: auto;
+  margin: 4px auto;
+}
+
+.DrinkCardDiv .card .im {
+  width: 67%;
+  height: auto;
+  margin: auto;
+}
+
+.DrinkCardDiv .card-title {
+  color: rgb(53, 53, 53);
+  height: 50px !important;
+  font-size: 16px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.DrinkCardDiv .card-title:hover {
+  color: rgb(0, 121, 190);
+}
+
+.DrinkCardDiv .price-box {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+.DrinkCardDiv .price-now {
+  color: rgb(0, 121, 190);
+  font-weight: bold;
+  font-size: 20px;
+}
+.DrinkCardDiv .price-before {
+  text-decoration: line-through;
+  color: rgba(51, 51, 51, 0.658);
+  font-size: 12px;
+}
+.DrinkCardDiv .card-body a {
+  padding: 0px;
+  margin: 0px;
+}
