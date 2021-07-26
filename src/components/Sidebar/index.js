@@ -1,9 +1,15 @@
 import React from "react";
 import "./styles.css";
 import { Link } from "react-router-dom";
-
+import { useDrinkMethods } from "../../context/DrinkMethodsContext";
+import { useState } from "react/cjs/react.development";
+import { useEffect } from "react/cjs/react.development";
+import { db } from "../../firebase-config";
 export const Sidebar = () => {
-  const categories = [
+  const {categoryList, getDrinksBy}=useDrinkMethods();
+  const [categories, setCategories]=useState([]);
+  
+  const LocalCategories = [
     {
       name: "Whisky",
       amount: "10",
@@ -50,10 +56,21 @@ export const Sidebar = () => {
       path: "alcoholfree",
     },
   ];
+  const getAmountPerCategory= async ()=>{
+    await categoryList.map(async (e)=>{
+        await db.collection("categories").doc(e.id).update(
+          {amount: 5}
+        )
+    })
+  }
+  useEffect(async ()=>{
+    setCategories(await categoryList)
+    console.log(categoryList)
+  },[categoryList])
   return (
     <div className="SidebarDiv">
       <div className="list-group">
-        {categories.map((element, index) => {
+        {categories&& categories.map((element, index) => {
           return (
             <Link
               key={index}

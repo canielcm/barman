@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ProfileTimeline } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { LoginModal } from "..";
 export const Navbar = () => {
   const { currentUser, logout, userData } = useAuth();
   const [uEffectControl, setUEffectControl] = useState(0);
@@ -19,7 +20,7 @@ export const Navbar = () => {
     { name: "Home", path: "/" },
     { name: "Menu", path: "/menu" },
   ];
-  
+
   const SignOut = async () => {
     try {
       await logout();
@@ -170,6 +171,7 @@ export const Navbar = () => {
           </div>
         </nav>
       </div>
+      <LoginModal />
     </>
   );
 };

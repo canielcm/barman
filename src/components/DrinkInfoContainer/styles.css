@@ -2,49 +2,9 @@
   width: 40%;
 }
 
-.DrinkInfoContainerDiv .drink-info .card .ec-stars-wrapper {
-  font-size: 30px;
-  font-size: 2.5rem;
-  border-bottom: solid rgb(218, 215, 215);
-  margin-bottom: 4%;
-}
 
-.DrinkInfoContainerDiv .drink-info .card button {
-  width: 100%;
-}
-.DrinkInfoContainerDiv .drink-info .card .price-box {
-  justify-content: start;
-  border-bottom: solid rgb(218, 215, 215);
-  margin-bottom: 4%;
-}
 
-.DrinkInfoContainerDiv .drink-info .card .price-box .price-now {
-  font-size: 25px;
-}
 
-.DrinkInfoContainerDiv .drink-info .card .price-box .price-before {
-  font-size: 13px;
-}
-
-.DrinkInfoContainerDiv .btnadd {
-  margin-top: 4%;
-}
-
-@media (min-width: 768px) {
-    .DrinkInfoContainerDiv .drink-info-inside {
-    display: none;
-  }
-}
-
-@media (max-width: 767px) {
-    .DrinkInfoContainerDiv .drink-info-outside {
-    display: none;
-  }
-
-  .DrinkInfoContainerDiv .drink-select {
-    width: 100%;
-  }
-}
 
 .DrinkInfoContainerDiv .details {
   border-top: solid 4px rgb(247, 245, 245);

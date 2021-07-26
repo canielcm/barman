@@ -1,3 +1,8 @@
+.FooterDiv{
+  bottom: 0px !important;
+  height: 400px;
+  position: relative;
+}
 .FooterDiv .smediacontainer .FooterIcon {
   padding: 0px;
   color: rgb(128, 126, 126);
@@ -6,4 +11,17 @@
 
 .FooterDiv .smediacontainer .FooterIcon:hover {
   color: rgb(172, 169, 169);
+}
+.FooterDiv .copyright{
+  position: absolute;
+  width: 100%;
+  bottom: 0px !important;
+}
+@media(max-width: 772px){
+  .FooterDiv{
+    font-size: 15px;
+  }
+  .FooterDiv .text-muted{
+    display: none;
+  }
 }

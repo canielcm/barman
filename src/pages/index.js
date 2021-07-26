@@ -7,12 +7,11 @@ import {
   DrinkCard,
   DrinkContainer,
 } from "../components";
-import { db } from "../firebase-config";
 import { useAuth } from "../context/AuthContext";
 import { useDrinkMethods } from "../context/DrinkMethodsContext";
 const Home = () => {
   const { currentUser } = useAuth();
-  const { drinkList, getDrinkData, getDrinksBy } = useDrinkMethods();
+  const { drinkList, getDrinkData, getDrinksBy,drinkListOS } = useDrinkMethods();
   const [vecDrinks, setVecDrinks] = useState([]);
   const [uEffectControl, setUEffectControl] = useState(0);
   const increaseUFC = () => {

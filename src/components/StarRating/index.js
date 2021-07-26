@@ -8,8 +8,9 @@ import { useDrinkMethods } from "../../context/DrinkMethodsContext";
 import { db } from "../../firebase-config";
 export const StarRating = (props) => {
   const { userData } = useAuth();
-  const { getDrinkData } = useDrinkMethods();
+  const { getDrinkData, drinkList } = useDrinkMethods();
   const [rating, setRating] = useState(props.rating);
+  const [ratingsAmount, setRatingsAmount] = useState(0);
   const [hover, setHover] = useState(null);
   const drinkID = props.id;
   const updateRating = async (userRating) => {
@@ -20,20 +21,20 @@ export const StarRating = (props) => {
         let ratingUserResults;
         let ratingDrinkResult;
         vecUserRatings.map((element, index) => {
-          ratingUserResults = element.split("_");
-          console.log("ratingUserResults: ", ratingUserResults)
-          console.log(ratingUserResults[1],"vs", drinkID)
+          ratingUserResults = element.split(",");
+          console.log("ratingUserResults: ", ratingUserResults);
+          console.log(ratingUserResults[1], "vs", drinkID);
           if (String(ratingUserResults[1]) == String(drinkID)) {
             checked = true;
             ratingDrinkResult = ratingUserResults;
-            vecUserRatings[index]=`${userRating}_${ratingDrinkResult[1]}`
+            vecUserRatings[index] = `${userRating},${ratingDrinkResult[1]}`;
           }
         });
         let thisDrink = await getDrinkData(drinkID);
-        let vecRating = thisDrink.rating;
+        let vecRating = await thisDrink.rating;
         let totalRV = Number(vecRating[0]) * Number(vecRating[1]);
         if (!checked) {
-          console.log("new rating added")
+          console.log("new rating added");
           let amountRV = Number(vecRating[1]) + 1;
           vecRating[1] = amountRV;
           totalRV = totalRV + userRating;
@@ -45,35 +46,43 @@ export const StarRating = (props) => {
               rating: [NewRating, amountRV],
             });
           thisDrink = await getDrinkData(drinkID);
-          vecRating = thisDrink.rating;
+          vecRating = await thisDrink.rating;
 
           setRating(vecRating[0]);
 
-          let ratingControl = `${userRating}_${drinkID}`;
+          let ratingControl = `${userRating},${drinkID}`;
           vecUserRatings.push(ratingControl);
           await db.collection("users").doc(userData.id).update({
             ratings: vecUserRatings,
           });
         } else {
-          console.log("new rating updated")
+          console.log("new rating updated");
           await db.collection("users").doc(userData.id).update({
             ratings: vecUserRatings,
           });
-          let newRatingDrinkUpdated=(totalRV-Number(ratingDrinkResult[0])+userRating)/Number(vecRating[1]);
+          let newRatingDrinkUpdated =
+            (totalRV - Number(ratingDrinkResult[0]) + userRating) /
+            Number(vecRating[1]);
           await db
-          .collection("drinks")
-          .doc(drinkID)
-          .update({
-            rating: [newRatingDrinkUpdated, vecRating[1]],
-          });
+            .collection("drinks")
+            .doc(drinkID)
+            .update({
+              rating: [newRatingDrinkUpdated, vecRating[1]],
+            });
           setRating(newRatingDrinkUpdated);
         }
       } else console.log("no updated");
     } catch (error) {
+      console.log("Star Rating catch: ");
       console.log(error);
     }
   };
-  useEffect(async () => {}, []);
+  useEffect(async () => {
+    let thisDrink = await getDrinkData(drinkID);
+    let vecRating = await thisDrink.rating;
+    setRating(vecRating[0]);
+    setRatingsAmount(vecRating[1]);
+  }, [drinkList]);
   return (
     <div className="StarRatingDiv d-flex flex-wrap">
       {[...Array(5)].map((star, index) => {
@@ -121,7 +130,8 @@ export const StarRating = (props) => {
             </div>
           </div>
         );
-      })}
+      })}{" "}
+      <span className="text-muted RatingsNum">({ratingsAmount})</span>
     </div>
   );
 };

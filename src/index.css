@@ -1,3 +1,6 @@
+#root>div{
+  height: calc(100vh - 400px - 40px - 40px) !important ;
+}
 body {
   margin: 0;
   font-family: "Open Sans", sans-serif;

@@ -1,0 +1,46 @@
+.AddToCartBoxDiv .drink-info .card .ec-stars-wrapper {
+  font-size: 30px;
+  font-size: 2.5rem;
+  border-bottom: solid rgb(218, 215, 215);
+  margin-bottom: 4%;
+}
+
+.AddToCartBoxDiv .drink-info .card button {
+  width: 100%;
+}
+.AddToCartBoxDiv .drink-info .card .price-box {
+  justify-content: start;
+  margin-bottom: 4%;
+}
+
+.AddToCartBoxDiv .drink-info .card .price-box .price-now {
+  font-size: 25px;
+}
+
+.AddToCartBoxDiv .drink-info .card .price-box .price-before {
+  font-size: 13px;
+}
+.AddToCartBoxDiv .inside > div{
+    border-color: white !important;
+}
+
+.AddToCartBoxDiv .totalPrice{
+  color: rgb(0, 121, 190);
+  font-weight: bold;
+  font-size: 20px;
+}
+@media (min-width: 768px) {
+  .AddToCartBoxDiv .inside {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .AddToCartBoxDiv .outside {
+    display: none;
+  }
+
+  .AddToCartBoxDiv .drink-select {
+    width: 100%;
+  }
+}

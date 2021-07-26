@@ -3,8 +3,7 @@ import Home from "./pages/index";
 import NotFound from "./pages/NotFound";
 import Addnew from "./pages/addnew";
 import RegisterPage from "./pages/RegisterPage";
-import DrinkInfo from "./pages/DrinkInfo"
-import { LoginModal } from "./components";
+import DrinkInfo from "./pages/DrinkInfo";
 
 import { AuthProvider } from "./context/AuthContext";
 import { DrinkMethodsProvider } from "./context/DrinkMethodsContext";
@@ -20,7 +19,6 @@ function App() {
             <Route exact path="/drink/:id" component={DrinkInfo}></Route>
             <Route component={NotFound}></Route>
           </Switch>
-          <LoginModal />
         </BrowserRouter>
       </DrinkMethodsProvider>
     </AuthProvider>
