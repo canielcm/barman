@@ -1,0 +1,36 @@
+.CartItemDiv {
+  background-color: white;
+}
+.CartItemDiv .drinkName {
+  font-weight: 400;
+}
+.CartItemDiv .imgDrink {
+  width: 5rem;
+  height: 8rem;
+}
+
+.CartItemDiv .priceDiv {
+  min-width: 300px;
+}
+.CartItemDiv .btn-rem,
+.CartItemDiv .btn-add {
+  font-size: 20px;
+  color: grey;
+}
+
+.CartItemDiv .span-amount {
+  margin: auto 5px;
+  font-size: 18px;
+  font-weight: 500;
+  color: rgb(83, 83, 83);
+}
+
+.CartItemDiv .remove-btn {
+  margin-top: 4rem;
+}
+
+.CartItemDiv .total-price {
+  color: rgb(0, 121, 190);
+  font-weight: bold;
+  font-size: 20px;
+}

@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { useDrinkMethods } from "../../context/DrinkMethodsContext";
+import { useAuth } from "../../context/AuthContext";
+import { useHistory } from "react-router";
 import { PriceBox, StarRating } from "..";
 export const AddToCartBox = (props) => {
-  const { getPricePerAmount } = useDrinkMethods();
+  const { userData } = useAuth();
+  const { getPricePerAmount, addToCart } = useDrinkMethods();
   const [amount, setAmount] = useState(1);
+  const [showToast, setShowToast] = useState(false);
+  const history = useHistory();
   const handleChange = (e) => {
     let value = e.target.value;
     let vecValue = value.split(".");
@@ -16,9 +21,20 @@ export const AddToCartBox = (props) => {
       else setAmount(1);
     }
   };
-
+  const showingToast = () => {
+    setShowToast(true);
+    setTimeout(function () {
+      setShowToast(false);
+    }, 3000);
+  };
   return (
-    <div className="AddToCartBoxDiv">
+    <div
+      className={
+        props.position == "inside"
+          ? "AddToCartBoxDiv"
+          : "AddToCartBoxDiv card-shadow"
+      }
+    >
       <div
         className={
           props.position
@@ -35,19 +51,21 @@ export const AddToCartBox = (props) => {
                 rating={props.drink.rating[0]}
               ></StarRating>
             )}
-            <span className="text-muted">Unit price:</span>
-            <PriceBox
-              price={props.drink.price}
-              discount={props.drink.discount}
-            />
+            <div className="my-4">
+              <span className="text-muted">Unit price:</span>
+              <PriceBox
+                price={props.drink.price}
+                discount={props.drink.discount}
+              />
+            </div>
 
-            <label className="form-check-label text-muted">
-              Quantity to buy
+            <label className="form-check-label text-muted mb-1">
+              Quantity to buy:
             </label>
             <br />
             <div className="d-flex">
               <input
-                className="form-number-input form-control w-50"
+                className="form-number-input form-control inputAmount"
                 type="number"
                 value={amount}
                 onChange={handleChange}
@@ -65,7 +83,7 @@ export const AddToCartBox = (props) => {
                       props.drink.discount,
                       Number(amount)
                     )
-                  )}{" "}
+                  )}
                   €
                 </span>
               </div>
@@ -73,12 +91,43 @@ export const AddToCartBox = (props) => {
 
             <button
               type="button"
-              id="liveToastBtn"
-              className="btn btn-primary mt-3"
+              className="btn mt-3 btn-primary-shadow"
+              onClick={() => {
+                if (props.drink.id) {
+                  showingToast();
+                  addToCart(userData.id, props.drink.id, amount);
+                }
+              }}
             >
               <strong>Add to cart</strong>
             </button>
-            <button type="button" className="btn btn-danger mt-3">
+
+            <div className="position-fixed bottom-0 end-0 p-3 Toast">
+              <div
+                id="liveToast"
+                className={!showToast ? "toast hide" : "toast show"}
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+              >
+                <div className="toast-body">
+                  <strong className="text-success">
+                    {props.drink.name} x{amount}
+                  </strong>{" "}
+                  added to Cart.
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="btn mt-3 btn-danger-shadow"
+              onClick={async () => {
+                if (props.drink.id) {
+                  await addToCart(userData.id, props.drink.id, amount);
+                  await history.push("/cart");
+                }
+              }}
+            >
               <strong>Buy now</strong>
             </button>
           </div>

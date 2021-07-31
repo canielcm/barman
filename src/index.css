@@ -1,5 +1,5 @@
-#root>div{
-  height: calc(100vh - 400px - 40px - 40px) !important ;
+* {
+  margin: 0px;
 }
 body {
   margin: 0;
@@ -12,7 +12,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
+.btn {
+  border-radius: 1px;
+}
 .btn-primary {
   background-color: rgb(57, 80, 184) !important;
   border-color: rgb(57, 80, 184);
@@ -31,7 +33,7 @@ code {
 }
 .btn-success {
   background-color: rgb(7, 202, 7);
-  border-color: rgb(7, 202, 7);
+  border-color: rgb(7, 202, 7) !important;
 }
 .btn-outline-success {
   border-color: rgb(7, 202, 7);
@@ -40,6 +42,7 @@ code {
 
 .btn-success:hover {
   background-color: rgb(9, 214, 9);
+  border-color: rgb(9, 214, 9) !important;
 }
 .btn-outline-success:hover {
   color: white;
@@ -53,6 +56,27 @@ code {
 }
 .btn-danger:hover {
   background-color: #ee2626;
+  border-color: #ee2626;
+}
+.btn-danger-shadow {
+  border-color: #e12c2c;
+  background-color: #e12c2c;
+  color: white !important;
+}
+.btn-danger-shadow:hover {
+  background-color: #ff1d1d;
+  box-shadow: 7px 7px 0px 0px rgb(148, 1, 1);
+  transition: box-shadow 0.2s linear !important;
+}
+.btn-primary-shadow {
+  background-color: rgb(57, 80, 184) !important;
+  border-color: rgb(57, 80, 184);
+  color: white !important;
+}
+.btn-primary-shadow:hover {
+  background-color: rgb(47, 80, 228) !important;
+  box-shadow: 7px 7px 0px 0px rgb(7, 0, 109);
+  transition: box-shadow 0.2s linear !important;
 }
 
 .btn-outline-danger {
@@ -65,9 +89,29 @@ code {
   color: white;
 }
 
+.btn-dark {
+  background-color: rgb(46, 46, 46) !important;
+}
+.btn-dark:hover {
+  background-color: rgb(73, 73, 73) !important;
+}
+
+.bg-dark {
+  background-color: rgb(46, 46, 46) !important;
+}
 .btn:focus {
   outline: none !important;
   box-shadow: none !important;
+}
+.form-control {
+  border-radius: 1px !important;
+}
+.card-shadow {
+  box-shadow: 7px 7px 0px 0px #24242407 !important;
+}
+.card,
+.card-body {
+  border: 3px solid white !important;
 }
 ::-webkit-scrollbar {
   width: 10px;
@@ -97,6 +141,6 @@ code {
   background: #d4d4d4;
 }
 
-a{
+a {
   text-decoration: none;
 }

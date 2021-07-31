@@ -8,7 +8,7 @@
 .StarRatingDiv .starBox {
   position: relative;
   z-index: 1;
-  color: rgb(235, 195, 19);
+  color: rgb(250, 186, 11);
 }
 .StarRatingDiv .checkContainer {
   height: 100%;

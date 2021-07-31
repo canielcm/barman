@@ -1,0 +1,6 @@
+.MenuBoxDiv .menuTitle{
+    font-weight: 600;
+    border-bottom: solid 5px red;
+    padding: 0;
+    width: auto;
+}

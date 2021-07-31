@@ -11,7 +11,8 @@ import { useAuth } from "../context/AuthContext";
 import { useDrinkMethods } from "../context/DrinkMethodsContext";
 const Home = () => {
   const { currentUser } = useAuth();
-  const { drinkList, getDrinkData, getDrinksBy,drinkListOS } = useDrinkMethods();
+  const { drinkList, getDrinkData, getDrinksBy, drinkListOS } =
+    useDrinkMethods();
   const [vecDrinks, setVecDrinks] = useState([]);
   const [uEffectControl, setUEffectControl] = useState(0);
   const increaseUFC = () => {
@@ -31,15 +32,13 @@ const Home = () => {
   }, [uEffectControl, currentUser]);
   return (
     <div>
-      {/* ************************************************************ */}
       <Navbar />
-      <Carousel />
       <div className="container-fluid">
-        <div className="row p-5">
-          <div className="col-sm-12 col-md-4">
-            <Sidebar />
+        <div className="row p-md-5 pd-sm-1">
+          <div className="col-sm-12 col-lg-4 SideDiv">
+            <Sidebar position="outside" />
           </div>
-          <div className="gallery col-sm-12 col-md-8">
+          <div className="gallery col-sm-12 col-md-12 col-lg-8">
             <div>
               <h3>
                 <strong>Beverage</strong>
@@ -48,9 +47,9 @@ const Home = () => {
             </div>
             <div>
               <h3>
-                <strong>Wisky</strong>
+                <strong>Whisky</strong>
               </h3>
-              <DrinkContainer category="wisky"></DrinkContainer>
+              <DrinkContainer category="whisky"></DrinkContainer>
             </div>
             <div>
               <h3>
@@ -61,6 +60,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <Carousel />
       <Footer />
     </div>
   );

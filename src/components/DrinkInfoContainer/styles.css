@@ -1,33 +1,36 @@
+.DrinkInfoContainerDiv{
+  background-color: rgba(46, 42, 42, 0.027);
+  margin: 0px;
+  padding: 0.5rem; 
+}
+
 .DrinkInfoContainerDiv .infoimg {
   width: 40%;
 }
-
-
-
-
+.DrinkInfoContainerDiv .drinkTitle{
+  color: rgb(56, 56, 56);font-weight: 500;
+}
 
 .DrinkInfoContainerDiv .details {
-  border-top: solid 4px rgb(247, 245, 245);
+  border-top: solid 10px rgb(255, 255, 255);
   margin: 0px;
 }
-.DrinkInfoContainerDiv .labeldetails {
-  margin-top: 4%;
-  margin-left: 1%;
-  color: rgb(223, 63, 63);
+.DrinkInfoContainerDiv .labeldescription:hover, .DrinkInfoContainerDiv .labeldetails:hover {
+  color: black !important;
+  box-shadow: 0px -6px 0px 0px #e12c2c inset !important;
+  transition: box-shadow 0.3s linear;
 }
-.DrinkInfoContainerDiv .labeldescription {
-  margin-top: 4%;
-  margin-left: 1%;
-  color: rgb(83, 83, 83);
+.DrinkInfoContainerDiv .textDescription{
+  color: rgb(49, 49, 49);
+  font-size: 14px;
 }
 .DrinkInfoContainerDiv .details .top {
-  border-top: solid 4px rgb(247, 245, 245);
+  border-top: solid 1px rgb(212, 212, 212);
 }
 .DrinkInfoContainerDiv .details .dl-details {
   display: flex;
   margin: 0px;
-
-  border-bottom: solid 4px rgb(247, 245, 245);
+  border-bottom: solid 1px rgb(212, 212, 212);
 }
 .DrinkInfoContainerDiv .details .dl-details dt {
   margin: 0px;

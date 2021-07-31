@@ -5,10 +5,11 @@ import {
   faWineGlassAlt,
   faSearch,
   faUser,
+  faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { LoginModal } from "..";
+import { LoginModal, Sidebar } from "..";
 export const Navbar = () => {
   const { currentUser, logout, userData } = useAuth();
   const [uEffectControl, setUEffectControl] = useState(0);
@@ -87,6 +88,29 @@ export const Navbar = () => {
                     </li>
                   );
                 })}
+                <li className="CategoriesLi">
+                  <div className="dropdown px-0 mx-0">
+                    <div
+                      className="btn px-0 mx-0 text-light"
+                      href="#"
+                      role="button"
+                      id="dropdownMenuLink"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <strong>Categories</strong>
+                    </div>
+
+                    <ul
+                      className="dropdown-menu"
+                      aria-labelledby="dropdownMenuLink"
+                    >
+                      <li>
+                        <Sidebar />
+                      </li>
+                    </ul>
+                  </div>
+                </li>
               </ul>
               <form className="d-flex">
                 <input
@@ -95,12 +119,6 @@ export const Navbar = () => {
                   placeholder="Search"
                   aria-label="Search"
                 />
-                <button
-                  className="btn btn-outline-danger me-2 px-3"
-                  type="submit"
-                >
-                  <FontAwesomeIcon icon={faSearch} />
-                </button>
               </form>
               {!currentUser ? (
                 <button
@@ -112,7 +130,7 @@ export const Navbar = () => {
                   Sign In
                 </button>
               ) : (
-                <ul className="navbar-nav me-5 mb-2 mb-lg-0">
+                <ul className="navbar-nav me-2 mb-2 mb-lg-0">
                   <li className="nav-item dropdown">
                     <div
                       className="nav-link dropdown-toggle dropUserOptions"
@@ -164,6 +182,18 @@ export const Navbar = () => {
                         </button>
                       </li>
                     </ul>
+                  </li>
+                  <li className="nav-item">
+                    <div className="CartIconDiv">
+                      <Link
+                        to="/cart"
+                      >
+                        <FontAwesomeIcon
+                          className="cartIcon"
+                          icon={faShoppingCart}
+                        />
+                      </Link>
+                    </div>
                   </li>
                 </ul>
               )}

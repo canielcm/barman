@@ -13,7 +13,7 @@ export const DrinkMethodsProvider = (props) => {
   const [drinkList, setDrinkList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [uEffectControl, setUEffectControl] = useState(0);
-  const [getByParams, setGetByParams] = useState(['category','wisky']);
+  const [getByParams, setGetByParams] = useState(["category", "wisky"]);
   const [drinkListOS, setDrinkListOS] = useState([]);
   const increaseUFC = () => {
     let counter = uEffectControl + 1;
@@ -72,7 +72,7 @@ export const DrinkMethodsProvider = (props) => {
     }
   };
   const getDrinksByOS = async () => {
-    let params=[...getByParams];
+    let params = [...getByParams];
     const drinks = [];
     try {
       db.collection("drinks")
@@ -101,7 +101,7 @@ export const DrinkMethodsProvider = (props) => {
       drinkData.id = id;
       return drinkData;
     } catch (error) {
-      console.log(error);
+      console.log("getDrinkData says", error);
     }
   };
   const getDiscount = (price, discountPercentage) => {
@@ -119,6 +119,93 @@ export const DrinkMethodsProvider = (props) => {
     TotalPrice = TotalPrice.toFixed(2);
     return TotalPrice;
   };
+
+  /* *********************Cart Methods******************** */
+  const [cartControl, setCartControl]=useState(0);
+  const updateCartControl = ()=> {
+    let counter=cartControl+1;
+    setCartControl(counter)
+  }
+  const getUserCart = async (id) => {
+    let data;
+    try {
+      id = String(id);
+      data = await db.collection("cart").doc(id).get();
+      var cartData = await data.data();
+      cartData ? (cartData.id = id) : (cartData = null);
+      return cartData;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeToCart = async (id, idDrink) => {
+    try {
+      console.log("*****************");
+      console.log("This is the ID", id);
+      console.log("This is the idDrink", idDrink);
+      const cart = await getUserCart(id);
+      const vDrinks = cart.drinks;
+      cart.drinks.map((e, index) => {
+        if (idDrink == e.idDrink) {
+          vDrinks.splice(index, 1);
+        }
+      });
+      await db.collection("cart").doc(id).update({
+        drinks: vDrinks,
+      });
+    } catch (error) {
+      console.log("removeToCart error says", error);
+    }
+  };
+  const addToCart = async (id, idDrink, amount) => {
+    try {
+      console.log("This is the ID", id);
+      console.log("This is the idDrink", idDrink);
+      console.log("This is the amount", amount);
+      const cart = await getUserCart(id);
+      let temp = {
+        idUser: id,
+        drinks: [],
+      };
+      if (!cart) {
+        await db.collection("cart").doc(id).set(temp);
+      } else temp = await cart;
+      let found = false;
+      let newAmount;
+      let vDrinks = temp.drinks;
+      temp.drinks.map((e, index) => {
+        let obj = e;
+        if (obj.idDrink == idDrink) {
+          found = true;
+          newAmount = Number(obj.amount) + Number(amount);
+          vDrinks[index].amount = newAmount;
+        }
+      });
+      if (found) {
+        await db.collection("cart").doc(id).update({
+          drinks: vDrinks,
+        });
+      } else {
+        let vecDrinks = temp.drinks;
+        let drinkD = await getDrinkData(idDrink);
+        vecDrinks.push({
+          name: drinkD.name,
+          idDrink: idDrink,
+          amount: amount,
+          urlimg: drinkD.urlimg,
+          price: drinkD.price,
+          discount: drinkD.discount,
+        });
+        await db.collection("cart").doc(id).update({
+          drinks: vecDrinks,
+        });
+      }
+    } catch (error) {
+      console.log("There are errors", error);
+    }
+  };
+  /* ***************************************************** */
   useEffect(async () => {
     await getData();
     await getDrinksByOS();
@@ -136,9 +223,14 @@ export const DrinkMethodsProvider = (props) => {
       getPricePerAmount,
       drinkListOS,
       setGetByParams,
-      categoryList
+      categoryList,
+      addToCart,
+      getUserCart,
+      removeToCart,
+      cartControl,
+      updateCartControl
     };
-  }, [drinkList, drinkListOS, categoryList]);
+  }, [drinkList, drinkListOS, categoryList, cartControl]);
   return (
     <DrinkMethodsContext.Provider value={value}>
       {props.children}

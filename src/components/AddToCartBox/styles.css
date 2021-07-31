@@ -29,6 +29,13 @@
   font-weight: bold;
   font-size: 20px;
 }
+.AddToCartBoxDiv .inputAmount{
+  width: 40%;
+}
+
+.AddToCartBoxDiv .Toast{
+  z-index: 11;
+}
 @media (min-width: 768px) {
   .AddToCartBoxDiv .inside {
     display: none;

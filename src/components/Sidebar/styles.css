@@ -1,0 +1,21 @@
+.SidebarDiv .list-group-item {
+  border-color: white;
+  border-bottom: solid 1px rgb(223, 223, 223);
+  color: rgb(83, 83, 83);
+}
+.SidebarDiv .list-group-item:hover {
+  box-shadow: 0px -8px 0px 0px #e12c2c inset !important;
+  transition: box-shadow 0.3s linear;
+  background-color: rgba(255, 0, 0, 0.061);
+}
+.SidebarDiv .badge {
+  background-color: rgba(255, 255, 255, 0) !important;
+  color: gray;
+  font-size: 13px;
+  font-weight: 400;
+}
+@media (max-width: 992px) {
+  .SidebarDivoutside {
+    display: none;
+  }
+}

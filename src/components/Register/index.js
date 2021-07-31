@@ -7,6 +7,7 @@ export const Register = () => {
   const history = useHistory();
   const { login, signup } = useAuth();
   const [validation, setValidation] = useState(false);
+  const [passwordMatch, setPasswordMatch] = useState(false);
   const [user, setUser] = useState({
     name: "",
     lastName: "",
@@ -16,15 +17,17 @@ export const Register = () => {
   });
   const [password, setPassword] = useState({
     password: "",
-    ConfirmPassword: "",
+    confirmPassword: "",
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await db.collection("users").add(user);
-      await signup(user.email, user.password);
-      await login(user.email, user.password);
-      history.push("/");
+      if (password.password == password.confirmPassword) {
+        await db.collection("users").add(user);
+        await signup(user.email, user.password);
+        await login(user.email, user.password);
+        history.push("/");
+      }else setPasswordMatch(true)
     } catch (error) {
       console.log(error);
     }
@@ -47,8 +50,7 @@ export const Register = () => {
       user.email !== "" &&
       user.lastName !== "" &&
       user.name !== "" &&
-      mydate.getFullYear() < validYear &&
-      password.password === password.confirmPassword
+      mydate.getFullYear() < validYear
     ) {
       setValidation(true);
     }
@@ -165,6 +167,7 @@ export const Register = () => {
           className="btn btn-danger w-100 p-2"
           disabled={!validation}
         />
+        {passwordMatch && <div className="alert alert-danger">Passwords don't match</div>}
       </form>
     </div>
   );

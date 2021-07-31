@@ -1,0 +1,12 @@
+.CartListDiv {
+  min-height: 100vh;
+  background-color: rgba(46, 42, 42, 0.027);
+  padding: 1rem;
+}
+
+.CartListDiv .drinkList {
+  box-shadow: 1px 2px 19px 0px #0000001c !important;
+  border-radius: 6px;
+  padding: 6px;
+  background-color: white;
+}

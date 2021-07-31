@@ -5,7 +5,7 @@ import { useDrinkMethods } from "../../context/DrinkMethodsContext";
 import { useState } from "react/cjs/react.development";
 import { useEffect } from "react/cjs/react.development";
 import { db } from "../../firebase-config";
-export const Sidebar = () => {
+export const Sidebar = (props) => {
   const {categoryList, getDrinksBy}=useDrinkMethods();
   const [categories, setCategories]=useState([]);
   
@@ -63,22 +63,24 @@ export const Sidebar = () => {
         )
     })
   }
+  const nameTitle = (name)=>String(name).charAt(0).toUpperCase() + "" + String(name).slice(1);
+  
   useEffect(async ()=>{
     setCategories(await categoryList)
     console.log(categoryList)
   },[categoryList])
   return (
-    <div className="SidebarDiv">
+    <div className={"SidebarDiv"+" "+"SidebarDiv"+props.position}>
       <div className="list-group">
         {categories&& categories.map((element, index) => {
           return (
             <Link
               key={index}
-              to="#"
+              to={"/menu/"+element.name}
               className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
             >
-              {element.name}
-              <span className="badge bg-primary rounded-pill">{element.amount}</span>
+              {nameTitle(element.name)}
+              <span className="badge bg-primary rounded-pill">({element.amount})</span>
             </Link>
           );
         })}

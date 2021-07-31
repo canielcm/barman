@@ -21,9 +21,9 @@ export const DrinkContainer = (props) => {
     }
   };
   useEffect(async () => {
-    await fillVecDrinks();
+    fillVecDrinks();
     console.log("here is de vector",vecDrinks);
-  },[drinkList]);
+  },[drinkList, props.category]);
   return (
     <div className="DrinkContainerDiv">
       <div className="container-fluid ">
