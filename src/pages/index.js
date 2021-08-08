@@ -45,18 +45,6 @@ const Home = () => {
               </h3>
               <DrinkContainer></DrinkContainer>
             </div>
-            <div>
-              <h3>
-                <strong>Whisky</strong>
-              </h3>
-              <DrinkContainer category="whisky"></DrinkContainer>
-            </div>
-            <div>
-              <h3>
-                <strong>Wine</strong>
-              </h3>
-              <DrinkContainer category="wine"></DrinkContainer>
-            </div>
           </div>
         </div>
       </div>

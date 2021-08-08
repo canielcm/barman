@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { db } from "../firebase-config";
+import { useDrinkMethods } from "../context/DrinkMethodsContext";
+import { useEffect } from "react/cjs/react.development";
+import { Table, EditButton } from "../components";
 const Addnew = () => {
+  const [vecDrinks, setVecDrinks] = useState([]);
+  const [InfoMatrix, setInfoMatrix] = useState([]);
+  const { drinkList, crudControl, updateCrudControl } = useDrinkMethods();
+  const [controler, setControler] = useState(0);
   const [drink, setDrink] = useState({
     name: "",
     abv: 0,
@@ -73,10 +80,66 @@ const Addnew = () => {
       document.getElementById("discount").value = 0;
       document.getElementById("price").value = 0;
       document.getElementById("urlimg").value = "";
+      await updateCrudControl();
+
+      window.location.href = await window.location.href;
     } catch (error) {
       console.log(error);
     }
   };
+  const TurnToMatrix = (vec) => {
+    let Matrix = [];
+    vec.map((e, index) => {
+      if (index == 0) {
+        Matrix.push([
+          "info",
+          "Name",
+          "img",
+          "Amount",
+          "Category",
+          "Brand",
+          "price",
+        ]);
+        Matrix.push([
+          <EditButton drink={e} />,
+          e.name,
+          <img src={e.urlimg} alt={e.name} style={{ width: "40px" }} />,
+          e.amount,
+          e.category,
+          e.brand,
+          e.price,
+        ]);
+      } else {
+        Matrix.push([
+          <EditButton drink={e} />,
+          e.name,
+          <img src={e.urlimg} alt={e.name} style={{ width: "40px" }} />,
+          e.amount,
+          e.category,
+          e.brand,
+          e.price,
+        ]);
+      }
+    });
+    setInfoMatrix(Matrix);
+  };
+  useEffect(async () => {
+    console.log("useEffect", controler);
+    let data = await drinkList;
+    setVecDrinks(await data);
+    let x = {
+      a: 1,
+      b: 2,
+    };
+    console.log("values", Object.values(x));
+    console.log("key", Object.keys(x));
+    console.log("table building");
+    TurnToMatrix(vecDrinks);
+    console.log(InfoMatrix);
+    if (InfoMatrix.length == 0) {
+      setControler(controler + 1);
+    }
+  }, [drinkList, controler, crudControl]);
   return (
     <div className="addnewDiv">
       <div className="alert alert-warning">
@@ -163,7 +226,7 @@ const Addnew = () => {
                 type="text"
                 name="urlimg"
                 value={drink.urlimg}
-                placeholder="abv"
+                placeholder="url"
                 onChange={handleChange}
                 id="urlimg"
               />
@@ -197,6 +260,7 @@ const Addnew = () => {
             submit
           </button>
         </form>
+        {InfoMatrix && <Table matrizCotent={InfoMatrix}></Table>}
       </div>
     </div>
   );

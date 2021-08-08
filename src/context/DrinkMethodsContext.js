@@ -121,11 +121,11 @@ export const DrinkMethodsProvider = (props) => {
   };
 
   /* *********************Cart Methods******************** */
-  const [cartControl, setCartControl]=useState(0);
-  const updateCartControl = ()=> {
-    let counter=cartControl+1;
-    setCartControl(counter)
-  }
+  const [cartControl, setCartControl] = useState(0);
+  const updateCartControl = () => {
+    let counter = cartControl + 1;
+    setCartControl(counter);
+  };
   const getUserCart = async (id) => {
     let data;
     try {
@@ -205,6 +205,14 @@ export const DrinkMethodsProvider = (props) => {
       console.log("There are errors", error);
     }
   };
+
+  /* ********************CRUD***************************** */
+  const [crudControl, setCrudControl] = useState(0);
+  const updateCrudControl = () => {
+    let counter = crudControl + 1;
+    setCrudControl(counter);
+  };
+
   /* ***************************************************** */
   useEffect(async () => {
     await getData();
@@ -228,9 +236,11 @@ export const DrinkMethodsProvider = (props) => {
       getUserCart,
       removeToCart,
       cartControl,
-      updateCartControl
+      updateCartControl,
+      crudControl,
+      updateCrudControl,
     };
-  }, [drinkList, drinkListOS, categoryList, cartControl]);
+  }, [drinkList, drinkListOS, categoryList, cartControl, crudControl]);
   return (
     <DrinkMethodsContext.Provider value={value}>
       {props.children}

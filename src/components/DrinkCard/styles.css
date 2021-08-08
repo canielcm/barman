@@ -61,3 +61,7 @@
   padding: 0px;
   margin: 0px;
 }
+
+.DrinkCardDiv .Toast{
+  z-index: 111;
+}

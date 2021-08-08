@@ -20,6 +20,7 @@ export const Navbar = () => {
   const navItens = [
     { name: "Home", path: "/" },
     { name: "Menu", path: "/menu" },
+    { name: "ADMIN", path: "/add" },
   ];
 
   const SignOut = async () => {
@@ -185,9 +186,7 @@ export const Navbar = () => {
                   </li>
                   <li className="nav-item">
                     <div className="CartIconDiv">
-                      <Link
-                        to="/cart"
-                      >
+                      <Link to="/cart">
                         <FontAwesomeIcon
                           className="cartIcon"
                           icon={faShoppingCart}
