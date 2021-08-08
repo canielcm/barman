@@ -203,7 +203,7 @@ export const EditButton = (props) => {
                   type="submit"
                   className="btn btn-primary w-100 p-2 mt-3"
                 >
-                  submit
+                  Update
                 </button>
               </form>
             </div>
