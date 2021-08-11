@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { useAuth } from "../../context/AuthContext";
+import firebase from "firebase/app";
 import "./styles.css";
 import { db } from "../../firebase-config";
 export const Register = () => {
   const history = useHistory();
-  const { login, signup } = useAuth();
+  const { login, signup, currentUser } = useAuth();
   const [validation, setValidation] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(false);
   const [user, setUser] = useState({
@@ -23,11 +24,26 @@ export const Register = () => {
     e.preventDefault();
     try {
       if (password.password == password.confirmPassword) {
-        await db.collection("users").add(user);
         await signup(user.email, user.password);
         await login(user.email, user.password);
+        // await db.collection("users").add({
+        //   name: user.name,
+        //   lastName: user.lastName,
+        //   email: user.email,
+        //   birthdate: user.birthdate,
+        //   ratings: user.ratings
+        // });
+        let id=await  firebase.auth().currentUser.uid
+        await db.collection("users").doc(id).set({
+          name: user.name,
+          lastName: user.lastName,
+          email: user.email,
+          birthdate: user.birthdate,
+          ratings: user.ratings,
+        });
         history.push("/");
-      }else setPasswordMatch(true)
+        // window.location.href = await window.location.href;
+      } else setPasswordMatch(true);
     } catch (error) {
       console.log(error);
     }
@@ -167,7 +183,9 @@ export const Register = () => {
           className="btn btn-danger w-100 p-2"
           disabled={!validation}
         />
-        {passwordMatch && <div className="alert alert-danger">Passwords don't match</div>}
+        {passwordMatch && (
+          <div className="alert alert-danger">Passwords don't match</div>
+        )}
       </form>
     </div>
   );

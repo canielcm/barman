@@ -1,0 +1,66 @@
+.UserSettingsDiv {
+  background-color: #c7c7c72f;
+  padding: 5rem 0;
+}
+.FormRow {
+  margin-bottom: 5rem;
+}
+.FormsContainer {
+  padding: 2rem;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0px 2px 10px 5px rgba(0, 0, 0, 0.021);
+}
+.UserInfoForm .FormRow {
+  margin-bottom: 121px;
+}
+.UserInfoFormElement {
+  width: 100%;
+  margin: 0;
+}
+.FormsContainerDiv {
+  width: 73.5% !important;
+  margin-left: 1%;
+}
+.FormsContainer .form-control {
+  width: 95%;
+  padding: 12px;
+  border-radius: 15px;
+  margin: 7px 14px;
+  border-color: #192126;
+}
+
+.passwordFormElement label {
+  width: 100%;
+  bottom: 0px;
+  position: relative;
+  margin-bottom: 0px;
+}
+.passwordFormElement label span {
+  margin-left: 15px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.OptionElement button {
+  border-radius: 10px;
+  width: 105%;
+  padding: 20px;
+  margin-bottom: 10px;
+  box-shadow: 0px 2px 10px 5px rgba(0, 0, 0, 0.021);
+}
+
+
+@media (max-width: 767px) {
+  .row .FormsContainerDiv {
+    width: 100% !important;
+  }
+  .OptionElement button {
+    width: 100%;
+  }
+}
+
+.PasswordDiv h4 {
+  margin-top: 20px;
+  margin-left: 22px;
+}

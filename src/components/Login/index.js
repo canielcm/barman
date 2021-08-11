@@ -26,16 +26,17 @@ export const Login = () => {
     setUserInput({ ...userInput, [name]: value });
   };
   return (
-    <div className="LoginDiv">
+    <div className="LoginDiv p-4">
+      <h4 className="text-center mb-5">Login</h4>
       {error && (
         <div className="alert alert-danger" role="alert">
           {error}
         </div>
       )}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="mb-3">
         <input
           type="email"
-          className="form-control"
+          className="form-control mb-4"
           placeholder="Email"
           name="email"
           value={userInput.email}
@@ -52,7 +53,7 @@ export const Login = () => {
         <input
           type="submit"
           value="Log In"
-          className="btn btn-primary"
+          className="btn btn-primary w-100 p-3 mt-3"
           data-bs-target="#exampleModal"
         />
       </form>

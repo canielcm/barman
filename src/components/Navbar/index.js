@@ -37,7 +37,7 @@ export const Navbar = () => {
       await increaseUFC();
     }
     console.log(userData);
-  }, [uEffectControl, currentUser]);
+  }, [uEffectControl, currentUser, userData]);
   return (
     <>
       <div
@@ -164,12 +164,9 @@ export const Navbar = () => {
                       aria-labelledby="navbarDropdown"
                     >
                       <li>
-                        <span className="dropdown-item">User options</span>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          Another action
-                        </a>
+                        <span className="dropdown-item">
+                          <Link to="/user">User Settings</Link>
+                        </span>
                       </li>
                       <li>
                         <hr className="dropdown-divider" />

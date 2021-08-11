@@ -5,7 +5,7 @@ const Cart = () => {
   return (
     <div>
       <Navbar />
-      <CartList/>
+      <CartList />
       <Footer />
     </div>
   );

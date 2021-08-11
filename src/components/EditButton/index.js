@@ -74,7 +74,7 @@ export const EditButton = (props) => {
       <div
         className="modal fade"
         id={`modal${props.drink.id}`}
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >

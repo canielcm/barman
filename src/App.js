@@ -6,6 +6,7 @@ import RegisterPage from "./pages/RegisterPage";
 import DrinkInfo from "./pages/DrinkInfo";
 import Menu from "./pages/menu";
 import Cart from "./pages/Cart";
+import User from "./pages/User";
 import { AuthProvider } from "./context/AuthContext";
 import { DrinkMethodsProvider } from "./context/DrinkMethodsContext";
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route exact path="/menu" component={Menu}></Route>
             <Route exact path="/menu/:id" component={Menu}></Route>
             <Route exact path="/cart" component={Cart}></Route>
+            <Route exact path="/user" component={User}></Route>
             <Route component={NotFound}></Route>
           </Switch>
         </BrowserRouter>
