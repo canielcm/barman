@@ -42,7 +42,7 @@ export const Register = () => {
           ratings: user.ratings,
         });
         history.push("/");
-        // window.location.href = await window.location.href;
+        window.location.href = await window.location.href;
       } else setPasswordMatch(true);
     } catch (error) {
       console.log(error);
