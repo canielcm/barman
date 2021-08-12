@@ -5,7 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useHistory } from "react-router";
 import { PriceBox, StarRating } from "..";
 export const AddToCartBox = (props) => {
-  const { userData } = useAuth();
+  const { userData, currentUser } = useAuth();
   const { getPricePerAmount, addToCart } = useDrinkMethods();
   const [amount, setAmount] = useState(1);
   const [showToast, setShowToast] = useState(false);
@@ -89,47 +89,53 @@ export const AddToCartBox = (props) => {
               </div>
             </div>
 
-            <button
-              type="button"
-              className="btn mt-3 btn-primary-shadow"
-              onClick={() => {
-                if (props.drink.id) {
-                  showingToast();
-                  addToCart(userData.id, props.drink.id, amount);
-                }
-              }}
-            >
-              <strong>Add to cart</strong>
-            </button>
+            {currentUser && (
+              <div>
+                <button
+                  type="button"
+                  className="btn mt-3 btn-primary-shadow"
+                  onClick={() => {
+                    if (props.drink.id) {
+                      showingToast();
+                      addToCart(userData.id, props.drink.id, amount);
+                    }
+                  }}
+                >
+                  <strong>Add to cart</strong>
+                </button>
 
-            <div className="position-fixed bottom-0 end-0 p-3 Toast">
-              <div
-                id="liveToast"
-                className={!showToast ? "toast hide" : "toast show"}
-                role="alert"
-                aria-live="assertive"
-                aria-atomic="true"
-              >
-                <div className="toast-body">
-                  <strong className="text-success">
-                    {props.drink.name} x{amount}
-                  </strong>{" "}
-                  added to Cart.
+                <div className="position-fixed bottom-0 end-0 p-3 Toast">
+                  <div
+                    id="liveToast"
+                    className={!showToast ? "toast hide" : "toast show"}
+                    role="alert"
+                    aria-live="assertive"
+                    aria-atomic="true"
+                  >
+                    <div className="toast-body">
+                      <strong className="text-success">
+                        {props.drink.name} x{amount}
+                      </strong>{" "}
+                      added to Cart.
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <button
-              type="button"
-              className="btn mt-3 btn-danger-shadow"
-              onClick={async () => {
-                if (props.drink.id) {
-                  await addToCart(userData.id, props.drink.id, amount);
-                  await history.push("/cart");
-                }
-              }}
-            >
-              <strong>Buy now</strong>
-            </button>
+            )}
+            {currentUser && (
+              <button
+                type="button"
+                className="btn mt-3 btn-danger-shadow"
+                onClick={async () => {
+                  if (props.drink.id) {
+                    await addToCart(userData.id, props.drink.id, amount);
+                    await history.push("/cart");
+                  }
+                }}
+              >
+                <strong>Buy now</strong>
+              </button>
+            )}
           </div>
         </div>
       </div>
