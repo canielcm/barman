@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDrinkMethods } from "../context/DrinkMethodsContext";
 import { Table, EditButtonApi } from "../components";
-import axios from "axios";
+import { useHistory } from "react-router";
+import { useAuth } from "../context/AuthContext";
 const AdminApi = () => {
   const [data, setData] = useState([]);
   const [infoMatrix, setInfoMatrix] = useState([]);
+  const history = useHistory();
+  const { currentUser } = useAuth();
   const [drink, setDrink] = useState({
     cantidad: 0,
     cod_categoria: 0,
@@ -36,6 +39,28 @@ const AdminApi = () => {
     e.preventDefault();
 
     addDrinkApi(drink);
+    document.getElementById("name").value = "";
+    document.getElementById("abv").value = 0;
+    document.getElementById("amount").value = 0;
+    document.getElementById("brand").value = "";
+    document.getElementById("discount").value = 0;
+    document.getElementById("price").value = 0;
+    document.getElementById("volume").value = 0;
+    document.getElementById("urlimg").value = "";
+    setDrink({
+      cantidad: 0,
+      cod_categoria: 0,
+      descripcion: "",
+      descuento: 0,
+      grado_acohol: 0,
+      marca: "",
+      nombre_bebida: "",
+      puntuacion: 0,
+      url: "",
+      volumen: 0,
+      puntuacion: 10,
+      precio: 0,
+    });
   };
   const TurnToMatrix = (vec) => {
     let Matrix = [];
@@ -77,21 +102,10 @@ const AdminApi = () => {
     setInfoMatrix(Matrix);
   };
   useEffect(async () => {
-    // const categories = await axios.get(
-    //   "http://localhost/Api_desarrollo_web/categorias"
-    // );
-    // console.log("categorias", categories.data.body[0]);
-    // const drinks = await axios.get(
-    //   "http://localhost/Api_desarrollo_web/bebidas"
-    // );
-    // console.log("bebidas: ", drinks.data.body[0]);
-    // const drink = await axios.get(
-    //   "http://localhost/Api_desarrollo_web/bebidas?id=1"
-    // );
-    // console.log("bebida: ", drink.data.body[0]);
+    if (!currentUser) {
+      history.push("/");
+    }
     console.log(categoryListApi);
-    // setData(await a.body[0]);
-    // console.log( await data);
     const cod = await categoryListApi[0];
     if (cod) {
       await setDrink({ ...drink, cod_categoria: cod.cod_categoria });
@@ -217,7 +231,7 @@ const AdminApi = () => {
                 value={drink.volumen}
                 placeholder="discount"
                 onChange={handleChange}
-                id="discount"
+                id="volume"
               />
             </div>
             <div className="col-md-12">
@@ -237,23 +251,7 @@ const AdminApi = () => {
             submit
           </button>
         </form>
-        <div className="container">
-          {drinkListApi &&
-            drinkListApi.map((e, index) => {
-              return (
-                <div key={index}>
-                  {e.nombre_bebida}
-                  <button
-                    onClick={() => {
-                      deleteDrinkApi(e.id_bebida);
-                    }}
-                  >
-                    delete
-                  </button>
-                </div>
-              );
-            })}
-        </div>
+        <div className="container"></div>
         {infoMatrix && <Table matrizCotent={infoMatrix}></Table>}
       </div>
     </div>
