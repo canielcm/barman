@@ -4,15 +4,8 @@ import "./styles.css";
 import { useDrinkMethods } from "../../context/DrinkMethodsContext";
 export const EditButton = (props) => {
   const {
-    crudControl,
     updateCrudControl,
-    drinkListApi,
-    getDrinkByIdApi,
-    addDrinkApi,
-    updateDrinkApi,
-    deleteDrinkApi,
-    categoryListApi,
-    getCategoryByIdApi,
+    
   } = useDrinkMethods();
   const [drink, setDrink] = useState(props.drink);
   const handleChange = (e) => {

@@ -5,15 +5,29 @@ export const EditButtonApi = (props) => {
   const { updateDrinkApi, deleteDrinkApi, categoryListApi } = useDrinkMethods();
   const [drink, setDrink] = useState(props.drink);
   const [categories, setCategories] = useState([]);
+  const [updatedStatus, setUpdatedStatus] = useState({
+    show: false,
+    type: true,
+  });
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDrink({ ...drink, [name]: value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(drink);
-    console.log(drink, drink.id_bebida);
-    await updateDrinkApi(drink, drink.id_bebida);
+    try {
+      console.log("nuevo descuento: ", drink.descuento);
+      await updateDrinkApi(drink, drink.id_bebida);
+      setUpdatedStatus({ show: true, type: true });
+      setTimeout(() => {
+        setUpdatedStatus({ show: false, type: true });
+      }, 3000);
+    } catch (error) {
+      setUpdatedStatus({ show: true, type: false });
+      setTimeout(() => {
+        setUpdatedStatus({ show: false, type: true });
+      }, 3000);
+    }
     // updateCrudControl();
   };
   const DeleteDrink = async () => {
@@ -168,9 +182,9 @@ export const EditButtonApi = (props) => {
                       type="number"
                       name="volumen"
                       value={drink.volumen}
-                      placeholder="discount"
+                      placeholder="volume"
                       onChange={handleChange}
-                      id="discount"
+                      id="volume"
                     />
                   </div>
                 </div>
@@ -180,6 +194,19 @@ export const EditButtonApi = (props) => {
                 >
                   Update
                 </button>
+                {updatedStatus.show == true && (
+                  <div className="mt-3">
+                    {updatedStatus.type ? (
+                      <div className="alert alert-success text-center">
+                        Info Updated!
+                      </div>
+                    ) : (
+                      <div className="alert alert-danger text-center">
+                        Something is going wrong!
+                      </div>
+                    )}
+                  </div>
+                )}
               </form>
             </div>
             <div className="modal-footer">

@@ -274,7 +274,7 @@ export const DrinkMethodsProvider = (props) => {
         cantidad: drink.cantidad,
         cod_categoria: drink.cod_categoria,
         descripcion: drink.descripcion,
-        descuento: drink.descripcion,
+        descuento: drink.descuento,
         grado_acohol: drink.grado_acohol,
         marca: drink.marca,
         nombre_bebida: drink.nombre_bebida,
