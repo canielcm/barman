@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
 export const Table = (props) => {
+  const [matrix, setMatrix] = useState(props.matrizCotent);
+  useEffect(() => {
+    console.log("useEffect Table");
+    setMatrix(props.matrizCotent);
+  });
   return (
     <div className="TableDiv">
       <div className="TableContainer table-responsive">
         <table className="table table-borderless">
           <thead>
-            {props.matrizCotent.map((element, index) => {
+            {matrix.map((element, index) => {
               if (index == 0) {
                 return (
                   <tr key={index}>
@@ -23,7 +28,7 @@ export const Table = (props) => {
             })}
           </thead>
           <tbody>
-            {props.matrizCotent.map((element, index) => {
+            {matrix.map((element, index) => {
               if (index > 0) {
                 return (
                   <tr key={index}>

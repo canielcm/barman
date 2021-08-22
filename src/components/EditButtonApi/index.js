@@ -1,20 +1,10 @@
-import React, { useState } from "react";
-import { db } from "../../firebase-config";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { useDrinkMethods } from "../../context/DrinkMethodsContext";
-export const EditButton = (props) => {
-  const {
-    crudControl,
-    updateCrudControl,
-    drinkListApi,
-    getDrinkByIdApi,
-    addDrinkApi,
-    updateDrinkApi,
-    deleteDrinkApi,
-    categoryListApi,
-    getCategoryByIdApi,
-  } = useDrinkMethods();
+export const EditButtonApi = (props) => {
+  const { updateDrinkApi, deleteDrinkApi, categoryListApi } = useDrinkMethods();
   const [drink, setDrink] = useState(props.drink);
+  const [categories, setCategories] = useState([]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDrink({ ...drink, [name]: value });
@@ -22,68 +12,31 @@ export const EditButton = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(drink);
-    await db.collection("drinks").doc(drink.id).update(drink);
-    updateCrudControl();
+    console.log(drink, drink.id_bebida);
+    await updateDrinkApi(drink, drink.id_bebida);
+    // updateCrudControl();
   };
   const DeleteDrink = async () => {
-    await db.collection("drinks").doc(drink.id).delete();
-    updateCrudControl();
+    await deleteDrinkApi(drink.id_bebida);
+    // updateCrudControl();
   };
-  const categories = [
-    {
-      name: "Whisky",
-      amount: "10",
-      path: "whisky",
-    },
-    {
-      name: "Vodka",
-      amount: "23",
-      path: "vodka",
-    },
-    {
-      name: "Ron",
-      amount: "21",
-      path: "wine",
-    },
-    {
-      name: "Ginebra",
-      amount: "34",
-      path: "ginebra",
-    },
-    {
-      name: "Cognac",
-      amount: "47",
-      path: "cognac",
-    },
-    {
-      name: "Beer",
-      amount: "86",
-      path: "beer",
-    },
-    {
-      name: "Tequila",
-      amount: "72",
-      path: "tequila",
-    },
-    {
-      name: "Alcohol-free drinks",
-      amount: "34",
-      path: "alcoholfree",
-    },
-  ];
+  useEffect(async () => {
+    const vecCategory = await categoryListApi;
+    setCategories(vecCategory);
+  }, [categoryListApi]);
   return (
     <div>
       <button
         type="button"
         className="btn btn-primary"
         data-bs-toggle="modal"
-        data-bs-target={`#modal${props.drink.id}`}
+        data-bs-target={`#modal${props.drink.id_bebida}`}
       >
         info
       </button>
       <div
         className="modal fade"
-        id={`modal${props.drink.id}`}
+        id={`modal${props.drink.id_bebida}`}
         tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -92,7 +45,7 @@ export const EditButton = (props) => {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
-                {props.drink.name}
+                {props.drink.nombre_bebida}
               </h5>
               <button
                 type="button"
@@ -109,8 +62,8 @@ export const EditButton = (props) => {
                     <input
                       className="form-control"
                       type="text"
-                      name="name"
-                      value={drink.name}
+                      name="nombre_bebida"
+                      value={drink.nombre_bebida}
                       placeholder="name"
                       onChange={handleChange}
                       id="name"
@@ -121,8 +74,8 @@ export const EditButton = (props) => {
                     <input
                       className="form-control"
                       type="number"
-                      name="abv"
-                      value={drink.abv}
+                      name="grado_acohol"
+                      value={drink.grado_acohol}
                       placeholder="abv"
                       onChange={handleChange}
                       id="abv"
@@ -133,8 +86,8 @@ export const EditButton = (props) => {
                     <input
                       className="form-control"
                       type="number"
-                      name="amount"
-                      value={drink.amount}
+                      name="cantidad"
+                      value={drink.cantidad}
                       placeholder="amount"
                       onChange={handleChange}
                       id="amount"
@@ -145,8 +98,8 @@ export const EditButton = (props) => {
                     <input
                       className="form-control"
                       type="text"
-                      name="brand"
-                      value={drink.brand}
+                      name="marca"
+                      value={drink.marca}
                       placeholder="brand"
                       onChange={handleChange}
                       id="brand"
@@ -157,15 +110,15 @@ export const EditButton = (props) => {
                     <div className="my-auto">
                       <select
                         type="text"
-                        name="category"
-                        value={drink.category}
+                        name="cod_categoria"
+                        value={drink.cod_categoria}
                         onChange={handleChange}
                         id="category"
                       >
                         {categories.map((element, index) => {
                           return (
-                            <option value={element.path} key={index}>
-                              {element.path}
+                            <option value={element.cod_categoria} key={index}>
+                              {element.nombre_categoria}
                             </option>
                           );
                         })}
@@ -177,9 +130,9 @@ export const EditButton = (props) => {
                     <input
                       className="form-control"
                       type="text"
-                      name="urlimg"
-                      value={drink.urlimg}
-                      placeholder="abv"
+                      name="url"
+                      value={drink.url}
+                      placeholder="url"
                       onChange={handleChange}
                       id="urlimg"
                     />
@@ -189,8 +142,8 @@ export const EditButton = (props) => {
                     <input
                       className="form-control"
                       type="number"
-                      name="price"
-                      value={drink.price}
+                      name="precio"
+                      value={drink.precio}
                       placeholder="price"
                       onChange={handleChange}
                       id="price"
@@ -201,8 +154,20 @@ export const EditButton = (props) => {
                     <input
                       className="form-control"
                       type="number"
-                      name="discount"
-                      value={drink.discount}
+                      name="descuento"
+                      value={drink.descuento}
+                      placeholder="discount"
+                      onChange={handleChange}
+                      id="discount"
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label>volume</label>
+                    <input
+                      className="form-control"
+                      type="number"
+                      name="volumen"
+                      value={drink.volumen}
                       placeholder="discount"
                       onChange={handleChange}
                       id="discount"

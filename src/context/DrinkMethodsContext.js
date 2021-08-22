@@ -6,6 +6,7 @@ import React, {
   useMemo,
 } from "react";
 import { db } from "../firebase-config";
+import axios from "axios";
 const DrinkMethodsContext = createContext();
 export const useDrinkMethods = () => useContext(DrinkMethodsContext);
 
@@ -71,7 +72,7 @@ export const DrinkMethodsProvider = (props) => {
       return null;
     }
   };
-  const getDrinksByOS = async () => {
+  const getDrinksByOS = () => {
     let params = [...getByParams];
     const drinks = [];
     try {
@@ -212,12 +213,101 @@ export const DrinkMethodsProvider = (props) => {
     let counter = crudControl + 1;
     setCrudControl(counter);
   };
+  /* ************************API METHODS************************ */
+  const [drinkListApi, setDrinkListApi] = useState([]);
+  const [categoryListApi, setCategoryListApi] = useState([]);
+
+  const getCategoryListApi = async () => {
+    const categories = await axios.get(
+      "http://localhost/Api_desarrollo_web/categorias"
+    );
+    setCategoryListApi(categories.data.body[0]);
+  };
+  const getCategoryByIdApi = async (id) => {
+    try {
+      const drink = await axios.get(
+        `http://localhost/Api_desarrollo_web/categorias?id=${id}`
+      );
+      let myCategory = await drink.data.body[0];
+      return myCategory;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getDrinkListApi = async () => {
+    try {
+      const drinks = await axios.get(
+        "http://localhost/Api_desarrollo_web/bebidas"
+      );
+      let drinkArray = drinks.data.body[0];
+      setDrinkListApi(drinkArray);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getDrinkByIdApi = async (id) => {
+    try {
+      const drink = await axios.get(
+        `http://localhost/Api_desarrollo_web/bebidas?id=${id}`
+      );
+      let myDrink = drink.data.body[0];
+      return myDrink;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const addDrinkApi = async (drink) => {
+    try {
+      await axios.post("http://localhost/Api_desarrollo_web/bebidas", drink);
+      await getDrinkListApi();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const updateDrinkApi = async (drink, id) => {
+    try {
+      console.log("update metho: drink ", drink);
+      console.log("update metho: id ", id);
+      let drinkData = await getDrinkByIdApi(drink.id_bebida);
+      await axios.put(`http://localhost/Api_desarrollo_web/bebidas?id=${id}`, {
+        cantidad: drink.cantidad,
+        cod_categoria: drink.cod_categoria,
+        descripcion: drink.descripcion,
+        descuento: drink.descripcion,
+        grado_acohol: drink.grado_acohol,
+        marca: drink.marca,
+        nombre_bebida: drink.nombre_bebida,
+        puntuacion: drinkData.puntuacion ,
+        url: drink.url,
+        volumen: drink.volumen,
+        precio: drink.precio,
+      });
+      await getDrinkListApi();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteDrinkApi = async (id) => {
+    try {
+      await axios.delete(
+        `http://localhost/Api_desarrollo_web/bebidas?id=${id}`
+      );
+      await getDrinkListApi();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   /* ***************************************************** */
   useEffect(async () => {
+    console.log("useEffect DrinkMethodsContext");
     await getData();
     await getDrinksByOS();
     await getCategories();
+    await getDrinkListApi();
+    await getCategoryListApi();
     if (uEffectControl < 1) {
       increaseUFC();
     }
@@ -239,8 +329,24 @@ export const DrinkMethodsProvider = (props) => {
       updateCartControl,
       crudControl,
       updateCrudControl,
+      // Drink API
+      drinkListApi,
+      getDrinkByIdApi,
+      addDrinkApi,
+      updateDrinkApi,
+      deleteDrinkApi,
+      categoryListApi,
+      getCategoryByIdApi,
     };
-  }, [drinkList, drinkListOS, categoryList, cartControl, crudControl]);
+  }, [
+    drinkList,
+    drinkListOS,
+    categoryList,
+    cartControl,
+    crudControl,
+    drinkListApi,
+    categoryListApi,
+  ]);
   return (
     <DrinkMethodsContext.Provider value={value}>
       {props.children}

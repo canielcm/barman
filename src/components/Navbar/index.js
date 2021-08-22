@@ -21,6 +21,7 @@ export const Navbar = () => {
     { name: "Home", path: "/" },
     { name: "Menu", path: "/menu" },
     { name: "ADMIN", path: "/add" },
+    {name: "API_ADMIN", path: "/admin_api"}
   ];
 
   const SignOut = async () => {

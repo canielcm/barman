@@ -7,7 +7,7 @@ import { useAuth } from "../../context/AuthContext";
 export const DrinkCard = (props) => {
   const [showToast, setShowToast] = useState(false);
   const { addToCart } = useDrinkMethods();
-  const { userData } = useAuth();
+  const { userData, currentUser } = useAuth();
   const ShowingToast = () => {
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
@@ -27,7 +27,7 @@ export const DrinkCard = (props) => {
 
         <div className="card-body">
           <Link to={"drink/" + props.drink.id} className="linkinfo">
-            <div className="card-title">{props.drink.name} </div>
+            <div className="card-title m-0">{props.drink.name} </div>
           </Link>
           <StarRating
             rating={props.drink.rating[0]}
@@ -39,32 +39,38 @@ export const DrinkCard = (props) => {
               price={props.drink.price}
             />
           </div>
-          <button
-            type="submit"
-            className="btn btn-dark submit w-100 py-0"
-            onClick={() => {
-              if (userData) {
-                addToCart(userData.id, props.drink.id, 1);
-                ShowingToast();
-              }
-            }}
-          >
-            Add to cart
-          </button>
-          <div className="position-fixed bottom-0 end-0 p-3 Toast">
-            <div
-              id="liveToast"
-              className={!showToast ? "toast hide" : "toast show"}
-              role="alert"
-              aria-live="assertive"
-              aria-atomic="true"
-            >
-              <div className="toast-body">
-                <strong className="text-success">{props.drink.name} x1</strong>{" "}
-                added to Cart.
+          {currentUser && (
+            <div>
+              <button
+                type="submit"
+                className="btn btn-dark submit w-100 py-0"
+                onClick={() => {
+                  if (userData) {
+                    addToCart(userData.id, props.drink.id, 1);
+                    ShowingToast();
+                  }
+                }}
+              >
+                Add to cart
+              </button>
+              <div className="position-fixed bottom-0 end-0 p-3 Toast">
+                <div
+                  id="liveToast"
+                  className={!showToast ? "toast hide" : "toast show"}
+                  role="alert"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                >
+                  <div className="toast-body">
+                    <strong className="text-success">
+                      {props.drink.name} x1
+                    </strong>{" "}
+                    added to Cart.
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
