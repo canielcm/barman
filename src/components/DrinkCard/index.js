@@ -26,13 +26,13 @@ export const DrinkCard = (props) => {
         </div>
 
         <div className="card-body">
-          <Link to={"drink/" + props.drink.id} className="linkinfo">
+          <Link to={"/drink/" + props.drink.id} className="linkinfo">
             <div className="card-title m-0">{props.drink.name} </div>
           </Link>
-          <StarRating
+          {/* <StarRating
             rating={props.drink.rating[0]}
             id={props.drink.id}
-          ></StarRating>
+          ></StarRating> */}
           <div className="price-box special-price price">
             <PriceBox
               discount={props.drink.discount}

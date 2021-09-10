@@ -121,13 +121,7 @@ export const DrinkInfoContainer = () => {
                   </div>
                 ) : (
                   <p className="card-text textDescription">
-                    This is a wider card with supporting text below as a natural
-                    lead-in to additional content. This content is a little bit
-                    longer. Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit. Reiciendis iure possimus blanditiis ratione
-                    reprehenderit ipsam quasi repellat placeat maxime vitae
-                    consequatur rerum quis, modi ut ea sunt accusantium debitis
-                    repellendus.
+                    {currentDrink && currentDrink.description}
                   </p>
                 )}
               </div>

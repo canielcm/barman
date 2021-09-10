@@ -10,7 +10,7 @@ export const MenuBox = () => {
   let nameTitle = String(id).charAt(0).toUpperCase() + "" + String(id).slice(1);
   let category;
   useEffect(async () => {
-    let vecDrinks = await getDrinksBy("category", String(id));
+    let vecDrinks = await getDrinksBy(String(id));
     if ((await vecDrinks.length) == 0) {
       history.push("/menu");
       category = "";

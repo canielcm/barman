@@ -3,32 +3,32 @@ import { useDrinkMethods } from "../context/DrinkMethodsContext";
 import { Table, EditButtonApi } from "../components";
 import { useHistory } from "react-router";
 import { useAuth } from "../context/AuthContext";
+import axios from "axios";
 const AdminApi = () => {
   const [data, setData] = useState([]);
   const [infoMatrix, setInfoMatrix] = useState([]);
   const history = useHistory();
   const { currentUser } = useAuth();
   const [drink, setDrink] = useState({
-    cantidad: 0,
-    cod_categoria: 0,
-    descripcion: "",
-    descuento: 0,
-    grado_acohol: 0,
-    marca: "",
-    nombre_bebida: "",
+    amount: 0,
+    category_id: 0,
+    description: "",
+    discount: 0,
+    abv: 0,
+    brand: "",
+    name: "",
     puntuacion: 0,
-    url: "",
-    volumen: 0,
+    urlimg: "",
     puntuacion: 10,
-    precio: 0,
+    price: 0,
   });
   const {
-    drinkListApi,
+    drinkList,
     getDrinkByIdApi,
     addDrinkApi,
     updateDrinkApi,
     deleteDrinkApi,
-    categoryListApi,
+    categoryList,
     getCategoryByIdApi,
   } = useDrinkMethods();
   const handleChange = (event) => {
@@ -46,20 +46,17 @@ const AdminApi = () => {
     document.getElementById("discount").value = 0;
     document.getElementById("price").value = 0;
     document.getElementById("volume").value = 0;
-    document.getElementById("urlimg").value = "";
+    document.getElementById("urlimgimg").value = "";
     setDrink({
-      cantidad: 0,
-      cod_categoria: 0,
-      descripcion: "",
-      descuento: 0,
-      grado_acohol: 0,
-      marca: "",
-      nombre_bebida: "",
-      puntuacion: 0,
-      url: "",
-      volumen: 0,
-      puntuacion: 10,
-      precio: 0,
+      amount: 0,
+      category_id: 0,
+      description: "",
+      discount: 0,
+      abv: 0,
+      brand: "",
+      name: "",
+      urlimg: "",
+      price: 0,
     });
   };
   const TurnToMatrix = (vec) => {
@@ -80,38 +77,39 @@ const AdminApi = () => {
         ]);
         Matrix.push([
           <EditButtonApi drink={e} />,
-          e.nombre_bebida,
-          <img src={e.url} alt={e.name} style={{ width: "40px" }} />,
-          e.cantidad,
+          e.name,
+          <img src={e.urlimg} alt={e.name} style={{ width: "40px" }} />,
+          e.amount,
           e.nombre_categoria,
-          e.marca,
-          e.precio,
+          e.brand,
+          e.price,
         ]);
       } else {
         Matrix.push([
           <EditButtonApi drink={e} />,
-          e.nombre_bebida,
-          <img src={e.url} alt={e.name} style={{ width: "40px" }} />,
-          e.cantidad,
+          e.name,
+          <img src={e.urlimg} alt={e.name} style={{ width: "40px" }} />,
+          e.amount,
           e.nombre_categoria,
-          e.marca,
-          e.precio,
+          e.brand,
+          e.price,
         ]);
       }
     });
     setInfoMatrix(Matrix);
   };
+ 
   useEffect(async () => {
     if (!currentUser) {
       history.push("/");
     }
-    console.log(categoryListApi);
-    const cod = await categoryListApi[0];
+   
+    const cod = await categoryList[0];
     if (cod) {
-      await setDrink({ ...drink, cod_categoria: cod.cod_categoria });
+      await setDrink({ ...drink, category_id: cod.id });
     }
-    TurnToMatrix(drinkListApi);
-  }, [categoryListApi, drinkListApi]);
+    TurnToMatrix(drinkList);
+  }, [categoryList, drinkList]);
   return (
     <div>
       {/* Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus vel corporis qui perspiciatis doloribus, illo perferendis laboriosam velit quo tenetur voluptas nemo ad nesciunt voluptates provident eius quasi neque placeat. */}
@@ -123,8 +121,8 @@ const AdminApi = () => {
               <input
                 className="form-control"
                 type="text"
-                name="nombre_bebida"
-                value={drink.nombre_bebida}
+                name="name"
+                value={drink.name}
                 placeholder="name"
                 onChange={handleChange}
                 id="name"
@@ -135,8 +133,8 @@ const AdminApi = () => {
               <input
                 className="form-control"
                 type="number"
-                name="grado_acohol"
-                value={drink.grado_acohol}
+                name="abv"
+                value={drink.abv}
                 placeholder="abv"
                 onChange={handleChange}
                 id="abv"
@@ -147,8 +145,8 @@ const AdminApi = () => {
               <input
                 className="form-control"
                 type="number"
-                name="cantidad"
-                value={drink.cantidad}
+                name="amount"
+                value={drink.amount}
                 placeholder="amount"
                 onChange={handleChange}
                 id="amount"
@@ -159,8 +157,8 @@ const AdminApi = () => {
               <input
                 className="form-control"
                 type="text"
-                name="marca"
-                value={drink.marca}
+                name="brand"
+                value={drink.brand}
                 placeholder="brand"
                 onChange={handleChange}
                 id="brand"
@@ -171,15 +169,15 @@ const AdminApi = () => {
               <div className="my-auto">
                 <select
                   type="number"
-                  name="cod_categoria"
-                  value={drink.cod_categoria}
+                  name="category_id"
+                  value={drink.category_id}
                   onChange={handleChange}
                   id="category"
                 >
-                  {categoryListApi.map((element, index) => {
+                  {categoryList.map((element, index) => {
                     return (
-                      <option value={element.cod_categoria} key={index}>
-                        {element.nombre_categoria}
+                      <option value={element.id} key={index}>
+                        {element.name}
                       </option>
                     );
                   })}
@@ -191,11 +189,11 @@ const AdminApi = () => {
               <input
                 className="form-control"
                 type="text"
-                name="url"
-                value={drink.url}
-                placeholder="url"
+                name="urlimg"
+                value={drink.urlimg}
+                placeholder="urlimg"
                 onChange={handleChange}
-                id="urlimg"
+                id="urlimgimg"
               />
             </div>
             <div className="col-md-6">
@@ -203,8 +201,8 @@ const AdminApi = () => {
               <input
                 className="form-control"
                 type="number"
-                name="precio"
-                value={drink.precio}
+                name="price"
+                value={drink.price}
                 placeholder="price"
                 onChange={handleChange}
                 id="price"
@@ -215,23 +213,11 @@ const AdminApi = () => {
               <input
                 className="form-control"
                 type="number"
-                name="descuento"
-                value={drink.descuento}
+                name="discount"
+                value={drink.discount}
                 placeholder="discount"
                 onChange={handleChange}
                 id="discount"
-              />
-            </div>
-            <div className="col-md-6">
-              <label>volume</label>
-              <input
-                className="form-control"
-                type="number"
-                name="volumen"
-                value={drink.volumen}
-                placeholder="discount"
-                onChange={handleChange}
-                id="volume"
               />
             </div>
             <div className="col-md-12">
@@ -239,8 +225,8 @@ const AdminApi = () => {
               <textarea
                 className="form-control"
                 type="text"
-                name="descripcion"
-                value={drink.descripcion}
+                name="description"
+                value={drink.description}
                 placeholder="description"
                 onChange={handleChange}
                 id="description"

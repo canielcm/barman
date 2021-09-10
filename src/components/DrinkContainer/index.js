@@ -8,8 +8,9 @@ export const DrinkContainer = (props) => {
   const { drinkList, getDrinksBy } = useDrinkMethods();
 
   const fillVecDrinks = async () => {
+    console.log("props.category: ", props.category);
     if (props.category) {
-      const data = await getDrinksBy("category", props.category);
+      const data = await getDrinksBy(props.category);
       if(data!=vecDrinks){
         setVecDrinks(data);
       }

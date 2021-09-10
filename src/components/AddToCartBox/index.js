@@ -45,12 +45,12 @@ export const AddToCartBox = (props) => {
         <div className="card mb-3">
           <div className="card-body">
             <h5 className="card-title">{props.drink.name}</h5>
-            {props.drink.rating && (
+            {/* {props.drink.rating && (
               <StarRating
                 id={props.drink.id}
                 rating={props.drink.rating[0]}
               ></StarRating>
-            )}
+            )} */}
             <div className="my-4">
               <span className="text-muted">Unit price:</span>
               <PriceBox

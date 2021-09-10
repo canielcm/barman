@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { useDrinkMethods } from "../../context/DrinkMethodsContext";
 export const EditButtonApi = (props) => {
-  const { updateDrinkApi, deleteDrinkApi, categoryListApi } = useDrinkMethods();
+  const { updateDrinkApi, deleteDrinkApi, categoryList } = useDrinkMethods();
   const [drink, setDrink] = useState(props.drink);
   const [categories, setCategories] = useState([]);
   const [updatedStatus, setUpdatedStatus] = useState({
@@ -16,8 +16,8 @@ export const EditButtonApi = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("nuevo descuento: ", drink.descuento);
-      await updateDrinkApi(drink, drink.id_bebida);
+      console.log("new discount: ", drink.discount);
+      await updateDrinkApi(drink, drink.id);
       setUpdatedStatus({ show: true, type: true });
       setTimeout(() => {
         setUpdatedStatus({ show: false, type: true });
@@ -31,26 +31,27 @@ export const EditButtonApi = (props) => {
     // updateCrudControl();
   };
   const DeleteDrink = async () => {
-    await deleteDrinkApi(drink.id_bebida);
+    await deleteDrinkApi(drink.id);
     // updateCrudControl();
   };
   useEffect(async () => {
-    const vecCategory = await categoryListApi;
+    const vecCategory = await categoryList;
     setCategories(vecCategory);
-  }, [categoryListApi]);
+    console.log("drink data: ", drink)
+  }, [categoryList]);
   return (
     <div>
       <button
         type="button"
         className="btn btn-primary"
         data-bs-toggle="modal"
-        data-bs-target={`#modal${props.drink.id_bebida}`}
+        data-bs-target={`#modal${props.drink.id}`}
       >
         info
       </button>
       <div
         className="modal fade"
-        id={`modal${props.drink.id_bebida}`}
+        id={`modal${props.drink.id}`}
         tabIndex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
@@ -59,7 +60,7 @@ export const EditButtonApi = (props) => {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
-                {props.drink.nombre_bebida}
+                {props.drink.name}
               </h5>
               <button
                 type="button"
@@ -76,8 +77,8 @@ export const EditButtonApi = (props) => {
                     <input
                       className="form-control"
                       type="text"
-                      name="nombre_bebida"
-                      value={drink.nombre_bebida}
+                      name="name"
+                      value={drink.name}
                       placeholder="name"
                       onChange={handleChange}
                       id="name"
@@ -88,8 +89,8 @@ export const EditButtonApi = (props) => {
                     <input
                       className="form-control"
                       type="number"
-                      name="grado_acohol"
-                      value={drink.grado_acohol}
+                      name="abv"
+                      value={drink.abv}
                       placeholder="abv"
                       onChange={handleChange}
                       id="abv"
@@ -100,8 +101,8 @@ export const EditButtonApi = (props) => {
                     <input
                       className="form-control"
                       type="number"
-                      name="cantidad"
-                      value={drink.cantidad}
+                      name="amount"
+                      value={drink.amount}
                       placeholder="amount"
                       onChange={handleChange}
                       id="amount"
@@ -112,8 +113,8 @@ export const EditButtonApi = (props) => {
                     <input
                       className="form-control"
                       type="text"
-                      name="marca"
-                      value={drink.marca}
+                      name="brand"
+                      value={drink.brand}
                       placeholder="brand"
                       onChange={handleChange}
                       id="brand"
@@ -124,15 +125,15 @@ export const EditButtonApi = (props) => {
                     <div className="my-auto">
                       <select
                         type="text"
-                        name="cod_categoria"
-                        value={drink.cod_categoria}
+                        name="category_id"
+                        value={drink.category_id}
                         onChange={handleChange}
                         id="category"
                       >
                         {categories.map((element, index) => {
                           return (
-                            <option value={element.cod_categoria} key={index}>
-                              {element.nombre_categoria}
+                            <option value={element.category_id} key={index}>
+                              {element.name}
                             </option>
                           );
                         })}
@@ -144,11 +145,11 @@ export const EditButtonApi = (props) => {
                     <input
                       className="form-control"
                       type="text"
-                      name="url"
-                      value={drink.url}
-                      placeholder="url"
+                      name="urlimg"
+                      value={drink.urlimg}
+                      placeholder="urlimg"
                       onChange={handleChange}
-                      id="urlimg"
+                      id="urlimgimg"
                     />
                   </div>
                   <div className="col-md-6">
@@ -156,8 +157,8 @@ export const EditButtonApi = (props) => {
                     <input
                       className="form-control"
                       type="number"
-                      name="precio"
-                      value={drink.precio}
+                      name="price"
+                      value={drink.price}
                       placeholder="price"
                       onChange={handleChange}
                       id="price"
@@ -168,23 +169,23 @@ export const EditButtonApi = (props) => {
                     <input
                       className="form-control"
                       type="number"
-                      name="descuento"
-                      value={drink.descuento}
+                      name="discount"
+                      value={drink.discount}
                       placeholder="discount"
                       onChange={handleChange}
                       id="discount"
                     />
                   </div>
-                  <div className="col-md-6">
-                    <label>volume</label>
-                    <input
+                  <div className="col-md-12">
+                    <label>description</label>
+                    <textarea
                       className="form-control"
                       type="number"
-                      name="volumen"
-                      value={drink.volumen}
-                      placeholder="volume"
+                      name="description"
+                      value={drink.description}
+                      placeholder="description"
                       onChange={handleChange}
-                      id="volume"
+                      id="description"
                     />
                   </div>
                 </div>

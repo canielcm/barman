@@ -18,13 +18,13 @@ export const CartItem = (props) => {
     addToCart,
   } = useDrinkMethods();
   let drinkObj;
-  let idDrink;
+  let drink_id;
   let drink;
   useEffect(async () => {
     if (props.drink) {
       drinkObj = props.drink;
-      idDrink = props.drink.idDrink;
-      drink = await getDrinkData(idDrink);
+      drink_id = props.drink.drink_id;
+      drink = await getDrinkData(drink_id);
     }
     if (drink) {
       setDrinkData(drink);
@@ -41,7 +41,7 @@ export const CartItem = (props) => {
             <div>
               <div className="d-flex flex-wrap">
                 <div className="imgDiv">
-                  <Link to={"/drink/"+props.drink.idDrink}>
+                  <Link to={"/drink/"+props.drink.drink_id}>
                     <img className="imgDrink" src={props.drink.urlimg} alt="" />
                   </Link>
                 </div>
@@ -53,7 +53,7 @@ export const CartItem = (props) => {
                     <button
                       className="btn btn-outline-danger py-0 px-2 remove-btn"
                       onClick={async () => {
-                        await removeToCart(userData.id, props.drink.idDrink);
+                        await removeToCart(userData.id, props.drink.drink_id);
                         await updateCartControl();
                       }}
                     >
@@ -69,7 +69,7 @@ export const CartItem = (props) => {
                   <button
                     className="btn  py-0 px-3 btn-rem"
                     onClick={async () => {
-                      await addToCart(userData.id, props.drink.idDrink, -1);
+                      await addToCart(userData.id, props.drink.drink_id, -1);
                       let count = amount - 1;
                       if (count > 0) {
                         await setAmount(count);
@@ -82,7 +82,7 @@ export const CartItem = (props) => {
                   <button
                     className="btn py-0 px-3 btn-add"
                     onClick={async () => {
-                      await addToCart(userData.id, props.drink.idDrink, 1);
+                      await addToCart(userData.id, props.drink.drink_id, 1);
                       let count = amount + 1;
                       if (count <= drinkData.amount) {
                         await setAmount(count);

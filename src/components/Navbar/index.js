@@ -27,7 +27,6 @@ export const Navbar = () => {
   const SignOut = async () => {
     try {
       await logout();
-      console.log(await "logout success");
     } catch (error) {
       console.log(error);
     }

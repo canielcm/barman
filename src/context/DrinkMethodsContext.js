@@ -11,6 +11,7 @@ const DrinkMethodsContext = createContext();
 export const useDrinkMethods = () => useContext(DrinkMethodsContext);
 
 export const DrinkMethodsProvider = (props) => {
+  const [token, setToken] = useState("");
   const [drinkList, setDrinkList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [uEffectControl, setUEffectControl] = useState(0);
@@ -20,58 +21,91 @@ export const DrinkMethodsProvider = (props) => {
     let counter = uEffectControl + 1;
     setUEffectControl(counter);
   };
-  const getCategories = () => {
+  const getCategories = async () => {
     try {
-      db.collection("categories").onSnapshot((snapshot) => {
-        const evt = [];
-        let temp;
-        snapshot.forEach((element) => {
-          temp = element.data();
-          temp.id = element.id;
-          evt.push(temp);
-        });
-        setCategoryList(evt);
-      });
+      const categories = await axios.get(
+        "http://localhost:8000/api/categories"
+      );
+      const categoriesData = categories.data;
+      setCategoryList(categoriesData);
     } catch (error) {
       console.log(error);
     }
   };
-  const getData = () => {
+  // const getCategories = () => {
+  //   try {
+  //     db.collection("categories").onSnapshot((snapshot) => {
+  //       const evt = [];
+  //       let temp;
+  //       snapshot.forEach((element) => {
+  //         temp = element.data();
+  //         temp.id = element.id;
+  //         evt.push(temp);
+  //       });
+  //       setCategoryList(evt);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const getData = async () => {
     try {
-      db.collection("drinks").onSnapshot((snapshot) => {
-        const evt = [];
-        let temp;
-        snapshot.forEach((element) => {
-          temp = element.data();
-          temp.id = element.id;
-          evt.push(temp);
-        });
-        setDrinkList(evt);
-      });
+      let data = await axios.get("http://localhost:8000/api/drinks");
+      let dataList = data.data;
+      setDrinkList(dataList);
     } catch (error) {
       console.log(error);
     }
   };
-  const getDrinksBy = async (key, value) => {
-    let data;
-    const drinks = [];
-    let drinkData;
+  // const getData = () => {
+  //   try {
+  //     db.collection("drinks").onSnapshot((snapshot) => {
+  //       const evt = [];
+  //       let temp;
+  //       snapshot.forEach((element) => {
+  //         temp = element.data();
+  //         temp.id = element.id;
+  //         evt.push(temp);
+  //       });
+  //       setDrinkList(evt);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  const getDrinksBy = async (value) => {
     try {
-      data = await db.collection("drinks").where(key, "==", value).get();
-      const snapshot = await data;
-      let temp;
-      snapshot.forEach((element) => {
-        temp = element.data();
-        temp.id = element.id;
-        drinks.push(temp);
-      });
-      drinkData = drinks;
+      const drinks = await axios.get(
+        `http://localhost:8000/api/drinks/category/${value}`
+      );
+      const drinkData = drinks.data;
       return drinkData;
     } catch (error) {
       console.log("Where error here: ", error);
       return null;
     }
   };
+  // const getDrinksBy = async (key,value) => {
+  //   let data;
+  //   const drinks = [];
+  //   let drinkData;
+  //   try {
+  //     data = await db.collection("drinks").where(key, "==", value).get();
+  //     const snapshot = await data;
+  //     let temp;
+  //     snapshot.forEach((element) => {
+  //       temp = element.data();
+  //       temp.id = element.id;
+  //       drinks.push(temp);
+  //     });
+  //     drinkData = drinks;
+  //     return drinkData;
+  //   } catch (error) {
+  //     console.log("Where error here: ", error);
+  //     return null;
+  //   }
+  // };
   const getDrinksByOS = () => {
     let params = [...getByParams];
     const drinks = [];
@@ -94,17 +128,28 @@ export const DrinkMethodsProvider = (props) => {
     }
   };
   const getDrinkData = async (id) => {
-    let data;
     try {
-      id = String(id);
-      data = await db.collection("drinks").doc(id).get();
-      var drinkData = await data.data();
-      drinkData.id = id;
-      return drinkData;
+      let data = await axios.get(
+        `http://localhost:8000/api/drinks/${id}`
+      );
+      let drinkData = data.data;
+      return drinkData[0];
     } catch (error) {
       console.log("getDrinkData says", error);
     }
   };
+  // const getDrinkData = async (id) => {
+  //   let data;
+  //   try {
+  //     id = String(id);
+  //     data = await db.collection("drinks").doc(id).get();
+  //     var drinkData = await data.data();
+  //     drinkData.id = id;
+  //     return drinkData;
+  //   } catch (error) {
+  //     console.log("getDrinkData says", error);
+  //   }
+  // };
   const getDiscount = (price, discountPercentage) => {
     let currentPrice;
     if (discountPercentage > 0) {
@@ -128,84 +173,135 @@ export const DrinkMethodsProvider = (props) => {
     setCartControl(counter);
   };
   const getUserCart = async (id) => {
-    let data;
     try {
-      id = String(id);
-      data = await db.collection("cart").doc(id).get();
-      var cartData = await data.data();
-      cartData ? (cartData.id = id) : (cartData = null);
+      const urlCart = `http://localhost:8000/api/carts/${id}`;
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const cart = await axios.get(urlCart, config);
+      const cartData = cart.data;
       return cartData;
     } catch (error) {
       console.log(error);
     }
   };
+  // const getUserCart = async (id) => {
+  //   let data;
+  //   try {
+  //     id = String(id);
+  //     data = await db.collection("cart").doc(id).get();
+  //     var cartData = await data.data();
+  //     cartData ? (cartData.id = id) : (cartData = null);
+  //     return cartData;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const removeToCart = async (id, idDrink) => {
     try {
-      console.log("*****************");
-      console.log("This is the ID", id);
-      console.log("This is the idDrink", idDrink);
-      const cart = await getUserCart(id);
-      const vDrinks = cart.drinks;
-      cart.drinks.map((e, index) => {
-        if (idDrink == e.idDrink) {
-          vDrinks.splice(index, 1);
-        }
-      });
-      await db.collection("cart").doc(id).update({
-        drinks: vDrinks,
-      });
+      const token = localStorage.getItem("token");
+      const urlCartDelete = `http://localhost:8000/api/carts/${id}/${idDrink}`;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const cart = await axios.delete(urlCartDelete, config);
     } catch (error) {
       console.log("removeToCart error says", error);
     }
   };
+
+  // const removeToCart = async (id, idDrink) => {
+  //   try {
+  //     console.log("*****************");
+  //     console.log("This is the ID", id);
+  //     console.log("This is the idDrink", idDrink);
+  //     const cart = await getUserCart(id);
+  //     const vDrinks = cart.drinks;
+  //     cart.drinks.map((e, index) => {
+  //       if (idDrink == e.idDrink) {
+  //         vDrinks.splice(index, 1);
+  //       }
+  //     });
+  //     await db.collection("cart").doc(id).update({
+  //       drinks: vDrinks,
+  //     });
+  //   } catch (error) {
+  //     console.log("removeToCart error says", error);
+  //   }
+  // };
+
   const addToCart = async (id, idDrink, amount) => {
     try {
-      console.log("This is the ID", id);
-      console.log("This is the idDrink", idDrink);
-      console.log("This is the amount", amount);
-      const cart = await getUserCart(id);
-      let temp = {
-        idUser: id,
-        drinks: [],
+      const urlAdd = "http://localhost:8000/api/carts";
+      const token = localStorage.getItem("token");
+      const body = {
+        user_id: id,
+        drink_id: idDrink,
+        amount: amount,
       };
-      if (!cart) {
-        await db.collection("cart").doc(id).set(temp);
-      } else temp = await cart;
-      let found = false;
-      let newAmount;
-      let vDrinks = temp.drinks;
-      temp.drinks.map((e, index) => {
-        let obj = e;
-        if (obj.idDrink == idDrink) {
-          found = true;
-          newAmount = Number(obj.amount) + Number(amount);
-          vDrinks[index].amount = newAmount;
-        }
-      });
-      if (found) {
-        await db.collection("cart").doc(id).update({
-          drinks: vDrinks,
-        });
-      } else {
-        let vecDrinks = temp.drinks;
-        let drinkD = await getDrinkData(idDrink);
-        vecDrinks.push({
-          name: drinkD.name,
-          idDrink: idDrink,
-          amount: amount,
-          urlimg: drinkD.urlimg,
-          price: drinkD.price,
-          discount: drinkD.discount,
-        });
-        await db.collection("cart").doc(id).update({
-          drinks: vecDrinks,
-        });
-      }
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const cart = await axios.post(urlAdd, body, config);
     } catch (error) {
       console.log("There are errors", error);
     }
   };
+  // const addToCart = async (id, idDrink, amount) => {
+  //   try {
+  //     console.log("This is the ID", id);
+  //     console.log("This is the idDrink", idDrink);
+  //     console.log("This is the amount", amount);
+  //     const cart = await getUserCart(id);
+  //     let temp = {
+  //       idUser: id,
+  //       drinks: [],
+  //     };
+  //     if (!cart) {
+  //       await db.collection("cart").doc(id).set(temp);
+  //     } else temp = await cart;
+  //     let found = false;
+  //     let newAmount;
+  //     let vDrinks = temp.drinks;
+  //     temp.drinks.map((e, index) => {
+  //       let obj = e;
+  //       if (obj.idDrink == idDrink) {
+  //         found = true;
+  //         newAmount = Number(obj.amount) + Number(amount);
+  //         vDrinks[index].amount = newAmount;
+  //       }
+  //     });
+  //     if (found) {
+  //       await db.collection("cart").doc(id).update({
+  //         drinks: vDrinks,
+  //       });
+  //     } else {
+  //       let vecDrinks = temp.drinks;
+  //       let drinkD = await getDrinkData(idDrink);
+  //       vecDrinks.push({
+  //         name: drinkD.name,
+  //         idDrink: idDrink,
+  //         amount: amount,
+  //         urlimg: drinkD.urlimg,
+  //         price: drinkD.price,
+  //         discount: drinkD.discount,
+  //       });
+  //       await db.collection("cart").doc(id).update({
+  //         drinks: vecDrinks,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.log("There are errors", error);
+  //   }
+  // };
 
   /* ********************CRUD***************************** */
   const [crudControl, setCrudControl] = useState(0);
@@ -278,7 +374,7 @@ export const DrinkMethodsProvider = (props) => {
         grado_acohol: drink.grado_acohol,
         marca: drink.marca,
         nombre_bebida: drink.nombre_bebida,
-        puntuacion: drinkData.puntuacion ,
+        puntuacion: drinkData.puntuacion,
         url: drink.url,
         volumen: drink.volumen,
         precio: drink.precio,
@@ -302,6 +398,9 @@ export const DrinkMethodsProvider = (props) => {
 
   /* ***************************************************** */
   useEffect(async () => {
+    const myToken = localStorage.getItem("token");
+    setToken(myToken);
+    console.log("drinkmethods token: ",token)
     console.log("useEffect DrinkMethodsContext");
     await getData();
     await getDrinksByOS();

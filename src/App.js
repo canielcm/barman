@@ -12,9 +12,9 @@ import { AuthProvider } from "./context/AuthContext";
 import { DrinkMethodsProvider } from "./context/DrinkMethodsContext";
 function App() {
   return (
-    <AuthProvider>
-      <DrinkMethodsProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
+        <DrinkMethodsProvider>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/add" component={Addnew} />
@@ -27,9 +27,9 @@ function App() {
             <Route exact path="/admin_api" component={AdminApi} />
             <Route component={NotFound}></Route>
           </Switch>
-        </BrowserRouter>
-      </DrinkMethodsProvider>
-    </AuthProvider>
+        </DrinkMethodsProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 export default App;

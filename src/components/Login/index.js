@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./styles.css";
 import { useAuth } from "../../context/AuthContext";
+import { useDrinkMethods } from "../../context/DrinkMethodsContext";
 export const Login = () => {
   const { login } = useAuth();
   const [error, setError] = useState("");
@@ -16,6 +17,7 @@ export const Login = () => {
       await login(userInput.email, userInput.password);
       console.log(await "LogIn success");
     } catch (error) {
+      console.log(error);
       let err = String(error);
       setError(err);
       setTimeout(() => setError(null), 7000);
