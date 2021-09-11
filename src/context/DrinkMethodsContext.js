@@ -32,22 +32,6 @@ export const DrinkMethodsProvider = (props) => {
       console.log(error);
     }
   };
-  // const getCategories = () => {
-  //   try {
-  //     db.collection("categories").onSnapshot((snapshot) => {
-  //       const evt = [];
-  //       let temp;
-  //       snapshot.forEach((element) => {
-  //         temp = element.data();
-  //         temp.id = element.id;
-  //         evt.push(temp);
-  //       });
-  //       setCategoryList(evt);
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const getData = async () => {
     try {
@@ -58,22 +42,7 @@ export const DrinkMethodsProvider = (props) => {
       console.log(error);
     }
   };
-  // const getData = () => {
-  //   try {
-  //     db.collection("drinks").onSnapshot((snapshot) => {
-  //       const evt = [];
-  //       let temp;
-  //       snapshot.forEach((element) => {
-  //         temp = element.data();
-  //         temp.id = element.id;
-  //         evt.push(temp);
-  //       });
-  //       setDrinkList(evt);
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+
   const getDrinksBy = async (value) => {
     try {
       const drinks = await axios.get(
@@ -86,26 +55,7 @@ export const DrinkMethodsProvider = (props) => {
       return null;
     }
   };
-  // const getDrinksBy = async (key,value) => {
-  //   let data;
-  //   const drinks = [];
-  //   let drinkData;
-  //   try {
-  //     data = await db.collection("drinks").where(key, "==", value).get();
-  //     const snapshot = await data;
-  //     let temp;
-  //     snapshot.forEach((element) => {
-  //       temp = element.data();
-  //       temp.id = element.id;
-  //       drinks.push(temp);
-  //     });
-  //     drinkData = drinks;
-  //     return drinkData;
-  //   } catch (error) {
-  //     console.log("Where error here: ", error);
-  //     return null;
-  //   }
-  // };
+
   const getDrinksByOS = () => {
     let params = [...getByParams];
     const drinks = [];
@@ -136,18 +86,7 @@ export const DrinkMethodsProvider = (props) => {
       console.log("getDrinkData says", error);
     }
   };
-  // const getDrinkData = async (id) => {
-  //   let data;
-  //   try {
-  //     id = String(id);
-  //     data = await db.collection("drinks").doc(id).get();
-  //     var drinkData = await data.data();
-  //     drinkData.id = id;
-  //     return drinkData;
-  //   } catch (error) {
-  //     console.log("getDrinkData says", error);
-  //   }
-  // };
+
   const addDrink = async (drink) => {
     try {
       const urlDrink = "http://localhost:8000/api/drinks";
@@ -228,18 +167,6 @@ export const DrinkMethodsProvider = (props) => {
       console.log(error);
     }
   };
-  // const getUserCart = async (id) => {
-  //   let data;
-  //   try {
-  //     id = String(id);
-  //     data = await db.collection("cart").doc(id).get();
-  //     var cartData = await data.data();
-  //     cartData ? (cartData.id = id) : (cartData = null);
-  //     return cartData;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   const removeToCart = async (id, idDrink) => {
     try {
@@ -255,26 +182,6 @@ export const DrinkMethodsProvider = (props) => {
       console.log("removeToCart error says", error);
     }
   };
-
-  // const removeToCart = async (id, idDrink) => {
-  //   try {
-  //     console.log("*****************");
-  //     console.log("This is the ID", id);
-  //     console.log("This is the idDrink", idDrink);
-  //     const cart = await getUserCart(id);
-  //     const vDrinks = cart.drinks;
-  //     cart.drinks.map((e, index) => {
-  //       if (idDrink == e.idDrink) {
-  //         vDrinks.splice(index, 1);
-  //       }
-  //     });
-  //     await db.collection("cart").doc(id).update({
-  //       drinks: vDrinks,
-  //     });
-  //   } catch (error) {
-  //     console.log("removeToCart error says", error);
-  //   }
-  // };
 
   const addToCart = async (id, idDrink, amount) => {
     try {
@@ -295,53 +202,6 @@ export const DrinkMethodsProvider = (props) => {
       console.log("There are errors", error);
     }
   };
-  // const addToCart = async (id, idDrink, amount) => {
-  //   try {
-  //     console.log("This is the ID", id);
-  //     console.log("This is the idDrink", idDrink);
-  //     console.log("This is the amount", amount);
-  //     const cart = await getUserCart(id);
-  //     let temp = {
-  //       idUser: id,
-  //       drinks: [],
-  //     };
-  //     if (!cart) {
-  //       await db.collection("cart").doc(id).set(temp);
-  //     } else temp = await cart;
-  //     let found = false;
-  //     let newAmount;
-  //     let vDrinks = temp.drinks;
-  //     temp.drinks.map((e, index) => {
-  //       let obj = e;
-  //       if (obj.idDrink == idDrink) {
-  //         found = true;
-  //         newAmount = Number(obj.amount) + Number(amount);
-  //         vDrinks[index].amount = newAmount;
-  //       }
-  //     });
-  //     if (found) {
-  //       await db.collection("cart").doc(id).update({
-  //         drinks: vDrinks,
-  //       });
-  //     } else {
-  //       let vecDrinks = temp.drinks;
-  //       let drinkD = await getDrinkData(idDrink);
-  //       vecDrinks.push({
-  //         name: drinkD.name,
-  //         idDrink: idDrink,
-  //         amount: amount,
-  //         urlimg: drinkD.urlimg,
-  //         price: drinkD.price,
-  //         discount: drinkD.discount,
-  //       });
-  //       await db.collection("cart").doc(id).update({
-  //         drinks: vecDrinks,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log("There are errors", error);
-  //   }
-  // };
 
   /* ********************CRUD***************************** */
   const [crudControl, setCrudControl] = useState(0);
@@ -350,7 +210,7 @@ export const DrinkMethodsProvider = (props) => {
     setCrudControl(counter);
   };
   /* ************************HOME METHODS************************ */
-  const addPurchase = async (home, id)=>{
+  const addPurchase = async (home, id) => {
     try {
       const urlHome = "http://localhost:8000/api/homes";
       const token = localStorage.getItem("token");
@@ -361,16 +221,16 @@ export const DrinkMethodsProvider = (props) => {
       };
       const homeRq = await axios.post(urlHome, home, config);
       const homeData = await homeRq.data;
-      console.log("homeData.data.id",homeData.data.id)
+      console.log("homeData.data.id", homeData.data.id);
       const urlPurchase = `http://localhost:8000/api/purchases/${id}/${homeData.data.id}`;
-      const purchase = await axios.post(urlPurchase,{},config);
+      const purchase = await axios.post(urlPurchase, {}, config);
       return purchase.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  const getPurchases = async (id)=>{
+  const getPurchases = async (id) => {
     try {
       const token = localStorage.getItem("token");
       const config = {
@@ -379,12 +239,12 @@ export const DrinkMethodsProvider = (props) => {
         },
       };
       const urlPurchase = `http://localhost:8000/api/purchases/${id}`;
-      const purchase = await axios.post(urlPurchase,{},config);
+      const purchase = await axios.post(urlPurchase, {}, config);
       return purchase.data;
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   /* ***************************************************** */
   useEffect(async () => {
@@ -420,15 +280,9 @@ export const DrinkMethodsProvider = (props) => {
       crudControl,
       updateCrudControl,
       addPurchase,
-      getPurchases
+      getPurchases,
     };
-  }, [
-    drinkList,
-    drinkListOS,
-    categoryList,
-    cartControl,
-    crudControl
-  ]);
+  }, [drinkList, drinkListOS, categoryList, cartControl, crudControl]);
   return (
     <DrinkMethodsContext.Provider value={value}>
       {props.children}

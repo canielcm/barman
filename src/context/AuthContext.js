@@ -5,12 +5,9 @@ import React, {
   useContext,
   useMemo,
 } from "react";
-import { auth } from "../firebase-config";
-import { db } from "../firebase-config";
-import firebase from "firebase/app";
+
 import { useHistory } from "react-router";
 import axios from "axios";
-import { config } from "@fortawesome/fontawesome-svg-core";
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
@@ -71,9 +68,6 @@ export const AuthProvider = (props) => {
       console.log("login (AuthContext)", error);
     }
   };
-  // const login = (email, password) => {
-  //   return auth.signInWithEmailAndPassword(email, password);
-  // };
 
   const logout = async () => {
     try {
@@ -103,7 +97,6 @@ export const AuthProvider = (props) => {
       console.log("Token expired");
     }
   };
-  // const logout = () => auth.signOut();
 
   const getUserData = async () => {
     try {
@@ -113,31 +106,7 @@ export const AuthProvider = (props) => {
       return null;
     }
   };
-  // const getUserData = async () => {
-  //   let data;
-  //   const evt = [];
-  //   let userData;
-  //   if (currentUser) {
-  //     let email = String(currentUser.email);
-  //     try {
-  //       data = await db.collection("users").where("email", "==", email).get();
-  //       const snapshot = await data;
-  //       let temp;
-  //       snapshot.forEach((element) => {
-  //         temp = element.data();
-  //         temp.id = element.id;
-  //         evt.push(temp);
-  //       });
-  //       evt.map((element) => {
-  //         userData = element;
-  //       });
-  //     } catch (error) {
-  //       console.log("Where error here: ", error);
-  //     }
-  //   } else userData = null;
 
-  //   return userData;
-  // };
   const updateUserData = async (newUser) => {
     try {
       const urlUpdate = `http://localhost:8000/api/auth/update/${currentUser.id}`;
@@ -153,7 +122,7 @@ export const AuthProvider = (props) => {
       console.log("error updatedUSerData", error);
     }
   };
- 
+
   const getRoles = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -180,29 +149,7 @@ export const AuthProvider = (props) => {
       console.log("getRoles (AuthContext): ", error);
     }
   };
-  // const getRoles = async (id) => {
-  //   try {
-  //     if (currentUser) {
-  //       console.log("id: ", id);
-  //       const token = localStorage.getItem("token");
-  //       const urlRoles = `http://localhost:8000/api/auth/roles/${id}`;
-  //       const config = {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       };
-  //       const vecRoles = await axios.get(urlRoles, config);
-  //       const vecRolesData = await  vecRoles.data;
-  //       console.log("vecRolesData in getRoles: ",vecRolesData);
-  //       setRoles(vecRolesData);
-  //     } else {
-  //       setRoles([]);
-  //     }
-  //   } catch (error) {
-  //     console.log("id: ", id);
-  //     console.log("getRoles (AuthContext): ", error);
-  //   }
-  // };
+
   const isAdmin = () => {
     let adminChecker = false;
     roles.forEach((e) => {
@@ -227,15 +174,7 @@ export const AuthProvider = (props) => {
       console.log("roles: ", roles);
     }
   }, [currentUser]);
-  // const value = {
-  //   signup,
-  //   login,
-  //   logout,
-  //   currentUser,
-  //   userData,
-  //   updateUserEmail,
-  //   updateUserData,
-  // };
+
   const value = useMemo(() => {
     return {
       signup,
@@ -246,7 +185,7 @@ export const AuthProvider = (props) => {
       updateUserData,
       roles,
       isAdmin,
-      getCurrentUserAndToken
+      getCurrentUserAndToken,
     };
   }, [currentUser, userData, roles]);
   return (
