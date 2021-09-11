@@ -10,6 +10,7 @@ import { db } from "../firebase-config";
 import firebase from "firebase/app";
 import { useHistory } from "react-router";
 import axios from "axios";
+import { config } from "@fortawesome/fontawesome-svg-core";
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
@@ -17,6 +18,7 @@ export const AuthProvider = (props) => {
   const [token, setToken] = useState("");
   const [currentUser, setCurrentUser] = useState({});
   const [userData, setUserData] = useState({});
+  const [roles, setRoles] = useState([]);
   const history = useHistory();
   let uData;
 
@@ -29,8 +31,13 @@ export const AuthProvider = (props) => {
     setToken(myToken);
   };
 
-  const signup = (email, password) => {
-    return auth.createUserWithEmailAndPassword(email, password);
+  const signup = async (user) => {
+    try {
+      const urlRegister = "http://localhost:8000/api/auth/register";
+      await axios.post(urlRegister, user);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const login = async (email, password) => {
     try {
@@ -133,29 +140,78 @@ export const AuthProvider = (props) => {
   // };
   const updateUserData = async (newUser) => {
     try {
-      await setUserData(newUser);
-      await db.collection("users").doc(currentUser.uid).update(newUser);
+      const urlUpdate = `http://localhost:8000/api/auth/update/${currentUser.id}`;
 
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      await axios.put(urlUpdate, newUser, config);
       console.log("updateUserData success");
     } catch (error) {
       console.log("error updatedUSerData", error);
     }
   };
-  const updateUserEmail = async (newEmail) => {
+ 
+  const getRoles = async () => {
+    const token = localStorage.getItem("token");
     try {
-      await firebase.auth().currentUser.updateEmail(newEmail);
-      await console.log("update success");
+      if (token) {
+        const urlMe = `http://localhost:8000/api/auth/me`;
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const Me = await axios.post(urlMe, {}, config);
+        const MeData = Me.data;
+        const urlRoles = `http://localhost:8000/api/auth/roles/${MeData.id}`;
+
+        const vecRoles = await axios.get(urlRoles, config);
+        const vecRolesData = await vecRoles.data;
+        console.log("vecRolesData in getRoles: ", vecRolesData);
+        console.log("vecRolesData in getRoles: ", vecRolesData);
+        setRoles(vecRolesData);
+      } else {
+        setRoles([]);
+      }
     } catch (error) {
-      console.log("We have problems: ", error);
+      console.log("getRoles (AuthContext): ", error);
     }
   };
-  const updateUserPassword = async (newPassword) => {
-    try {
-      await firebase.auth().currentUser.updatePassword(newPassword);
-      await console.log("Password update success");
-    } catch (error) {
-      console.log("error updating password", error);
-    }
+  // const getRoles = async (id) => {
+  //   try {
+  //     if (currentUser) {
+  //       console.log("id: ", id);
+  //       const token = localStorage.getItem("token");
+  //       const urlRoles = `http://localhost:8000/api/auth/roles/${id}`;
+  //       const config = {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       };
+  //       const vecRoles = await axios.get(urlRoles, config);
+  //       const vecRolesData = await  vecRoles.data;
+  //       console.log("vecRolesData in getRoles: ",vecRolesData);
+  //       setRoles(vecRolesData);
+  //     } else {
+  //       setRoles([]);
+  //     }
+  //   } catch (error) {
+  //     console.log("id: ", id);
+  //     console.log("getRoles (AuthContext): ", error);
+  //   }
+  // };
+  const isAdmin = () => {
+    let adminChecker = false;
+    roles.forEach((e) => {
+      console.log("element foreach: ", e);
+      if (e.name == "admin") {
+        adminChecker = true;
+      }
+    });
+    return adminChecker;
   };
   useEffect(async () => {
     console.log("userEffect AuthContext");
@@ -164,7 +220,12 @@ export const AuthProvider = (props) => {
     if (userLocal != currentUserData) {
       await getCurrentUserAndToken();
     }
-    console.log(await userData);
+
+    if (currentUser) {
+      await getRoles();
+      console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+      console.log("roles: ", roles);
+    }
   }, [currentUser]);
   // const value = {
   //   signup,
@@ -182,11 +243,12 @@ export const AuthProvider = (props) => {
       logout,
       currentUser,
       userData,
-      updateUserEmail,
       updateUserData,
-      updateUserPassword,
+      roles,
+      isAdmin,
+      getCurrentUserAndToken
     };
-  }, [currentUser, userData]);
+  }, [currentUser, userData, roles]);
   return (
     <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>
   );

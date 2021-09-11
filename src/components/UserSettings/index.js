@@ -2,13 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { useAuth } from "../../context/AuthContext";
 export const UserSettings = () => {
-  const {
-    userData,
-    updateUserEmail,
-    updateUserData,
-    updateUserPassword,
-    currentUser,
-  } = useAuth();
+  const { userData, updateUserData, currentUser, getCurrentUserAndToken } =
+    useAuth();
 
   const [controller, setController] = useState(0);
   const [status, setStatus] = useState(0);
@@ -40,8 +35,12 @@ export const UserSettings = () => {
     e.preventDefault();
     if (passwords.passwordConfirmation == passwords.password) {
       console.log(passwords.passwordConfirmation, passwords.password);
-      let newPassWord = String(passwords.password)
-      await updateUserPassword(newPassWord);
+      let newPassWord = String(passwords.password);
+      if (passwords.password != "") {
+        await updateUserData({
+          password: newPassWord,
+        });
+      }
       setValid(true);
     } else setValid(false);
   };
@@ -49,14 +48,25 @@ export const UserSettings = () => {
     e.preventDefault();
     console.log(currentUser.uid);
     try {
-      await updateUserEmail(uData.email);
       await updateUserData({
         name: uData.name,
-        lastName: uData.lastName,
+        lastname: uData.lastname,
         email: uData.email,
       });
-    } catch (error) {}
+      let counter = controller + 1;
+      setController(counter);
+      let newUserData = userData;
+      newUserData.name = uData.name;
+      newUserData.lastname = uData.lastname;
+      newUserData.email = uData.email;
+
+      localStorage.setItem("userData", JSON.stringify(newUserData));
+      await getCurrentUserAndToken();
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   const vecOptions = [
     <div className="UserInfoForm">
       {userData && (
@@ -86,8 +96,8 @@ export const UserSettings = () => {
                 <input
                   type="text"
                   className="form-control"
-                  name="lastName"
-                  value={uData.lastName}
+                  name="lastname"
+                  value={uData.lastname}
                   onChange={handleChange}
                 />
               </div>

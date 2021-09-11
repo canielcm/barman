@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { useDrinkMethods } from "../../context/DrinkMethodsContext";
 export const EditButtonApi = (props) => {
-  const { updateDrinkApi, deleteDrinkApi, categoryList } = useDrinkMethods();
+  const { updateDrink, deleteDrink, categoryList } = useDrinkMethods();
   const [drink, setDrink] = useState(props.drink);
   const [categories, setCategories] = useState([]);
   const [updatedStatus, setUpdatedStatus] = useState({
@@ -17,7 +17,7 @@ export const EditButtonApi = (props) => {
     e.preventDefault();
     try {
       console.log("new discount: ", drink.discount);
-      await updateDrinkApi(drink, drink.id);
+      await updateDrink(drink, drink.id);
       setUpdatedStatus({ show: true, type: true });
       setTimeout(() => {
         setUpdatedStatus({ show: false, type: true });
@@ -31,7 +31,7 @@ export const EditButtonApi = (props) => {
     // updateCrudControl();
   };
   const DeleteDrink = async () => {
-    await deleteDrinkApi(drink.id);
+    await deleteDrink(drink.id);
     // updateCrudControl();
   };
   useEffect(async () => {
@@ -132,7 +132,7 @@ export const EditButtonApi = (props) => {
                       >
                         {categories.map((element, index) => {
                           return (
-                            <option value={element.category_id} key={index}>
+                            <option value={element.id} key={index}>
                               {element.name}
                             </option>
                           );

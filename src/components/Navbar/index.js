@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { LoginModal, Sidebar } from "..";
 export const Navbar = () => {
-  const { currentUser, logout, userData } = useAuth();
+  const { currentUser, logout, userData, isAdmin, roles } = useAuth();
   const [uEffectControl, setUEffectControl] = useState(0);
   const increaseUFC = () => {
     let counter = uEffectControl + 1;
@@ -20,8 +20,7 @@ export const Navbar = () => {
   const navItens = [
     { name: "Home", path: "/" },
     { name: "Menu", path: "/menu" },
-    { name: "ADMIN", path: "/add" },
-    {name: "API_ADMIN", path: "/admin_api"}
+    isAdmin() && {name: "API_ADMIN", path: "/admin_api"}
   ];
 
   const SignOut = async () => {
@@ -37,7 +36,7 @@ export const Navbar = () => {
       await increaseUFC();
     }
     console.log(userData);
-  }, [uEffectControl, currentUser, userData]);
+  }, [uEffectControl, currentUser, roles]);
   return (
     <>
       <div
@@ -166,6 +165,11 @@ export const Navbar = () => {
                       <li>
                         <span className="dropdown-item">
                           <Link to="/user">User Settings</Link>
+                        </span>
+                      </li>
+                      <li>
+                        <span className="dropdown-item">
+                          <Link to="/purchases">Purchases</Link>
                         </span>
                       </li>
                       <li>

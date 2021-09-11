@@ -8,8 +8,10 @@ import Menu from "./pages/menu";
 import Cart from "./pages/Cart";
 import User from "./pages/User";
 import AdminApi from "./pages/AdminApi";
+import Purchases from "./pages/Purchases";
 import { AuthProvider } from "./context/AuthContext";
 import { DrinkMethodsProvider } from "./context/DrinkMethodsContext";
+
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +27,7 @@ function App() {
             <Route exact path="/cart" component={Cart} />
             <Route exact path="/user" component={User} />
             <Route exact path="/admin_api" component={AdminApi} />
+            <Route exact path="/purchases" component={Purchases} />
             <Route component={NotFound}></Route>
           </Switch>
         </DrinkMethodsProvider>

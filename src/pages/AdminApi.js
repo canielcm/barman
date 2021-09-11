@@ -8,7 +8,7 @@ const AdminApi = () => {
   const [data, setData] = useState([]);
   const [infoMatrix, setInfoMatrix] = useState([]);
   const history = useHistory();
-  const { currentUser } = useAuth();
+  const { currentUser, isAdmin } = useAuth();
   const [drink, setDrink] = useState({
     amount: 0,
     category_id: 0,
@@ -100,7 +100,9 @@ const AdminApi = () => {
   };
  
   useEffect(async () => {
-    if (!currentUser) {
+    let adminChecker = isAdmin();
+    console.log('adminChecker: ', adminChecker)
+    if (!currentUser || adminChecker==false) {
       history.push("/");
     }
    

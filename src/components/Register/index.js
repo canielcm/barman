@@ -13,8 +13,7 @@ export const Register = () => {
     name: "",
     lastName: "",
     email: "",
-    birthdate: "",
-    ratings: [],
+    birthdate: ""
   });
   const [password, setPassword] = useState({
     password: "",
@@ -24,25 +23,17 @@ export const Register = () => {
     e.preventDefault();
     try {
       if (password.password == password.confirmPassword) {
-        await signup(user.email, user.password);
-        await login(user.email, user.password);
-        // await db.collection("users").add({
-        //   name: user.name,
-        //   lastName: user.lastName,
-        //   email: user.email,
-        //   birthdate: user.birthdate,
-        //   ratings: user.ratings
-        // });
-        let id=await  firebase.auth().currentUser.uid
-        await db.collection("users").doc(id).set({
+        let newUser = {
           name: user.name,
-          lastName: user.lastName,
+          lastname: user.lastName,
           email: user.email,
-          birthdate: user.birthdate,
-          ratings: user.ratings,
-        });
+          password: password.password,
+          birthdate: user.birthdate 
+        }
+        console.log("new user data: ", newUser);
+        await signup(newUser);
+        await login(user.email, user.password);
         history.push("/");
-        window.location.href = await window.location.href;
       } else setPasswordMatch(true);
     } catch (error) {
       console.log(error);

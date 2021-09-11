@@ -129,9 +129,7 @@ export const DrinkMethodsProvider = (props) => {
   };
   const getDrinkData = async (id) => {
     try {
-      let data = await axios.get(
-        `http://localhost:8000/api/drinks/${id}`
-      );
+      let data = await axios.get(`http://localhost:8000/api/drinks/${id}`);
       let drinkData = data.data;
       return drinkData[0];
     } catch (error) {
@@ -150,6 +148,48 @@ export const DrinkMethodsProvider = (props) => {
   //     console.log("getDrinkData says", error);
   //   }
   // };
+  const addDrink = async (drink) => {
+    try {
+      const urlDrink = "http://localhost:8000/api/drinks";
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      await axios.post(urlDrink, drink, config);
+      await getData();
+    } catch (error) {
+      console.log("addDrink DrinkMethods says: ", error);
+    }
+  };
+  const updateDrink = async (drink, id) => {
+    try {
+      console.log("update metho: drink ", drink);
+      console.log("update metho: id ", id);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      await axios.put(`http://localhost:8000/api/drinks/${id}`, drink, config);
+      await getData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteDrink = async (id) => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      await axios.delete(`http://localhost:8000/api/drinks/${id}`, config);
+      await getData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const getDiscount = (price, discountPercentage) => {
     let currentPrice;
     if (discountPercentage > 0) {
@@ -309,104 +349,52 @@ export const DrinkMethodsProvider = (props) => {
     let counter = crudControl + 1;
     setCrudControl(counter);
   };
-  /* ************************API METHODS************************ */
-  const [drinkListApi, setDrinkListApi] = useState([]);
-  const [categoryListApi, setCategoryListApi] = useState([]);
+  /* ************************HOME METHODS************************ */
+  const addPurchase = async (home, id)=>{
+    try {
+      const urlHome = "http://localhost:8000/api/homes";
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const homeRq = await axios.post(urlHome, home, config);
+      const homeData = await homeRq.data;
+      console.log("homeData.data.id",homeData.data.id)
+      const urlPurchase = `http://localhost:8000/api/purchases/${id}/${homeData.data.id}`;
+      const purchase = await axios.post(urlPurchase,{},config);
+      return purchase.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-  const getCategoryListApi = async () => {
-    const categories = await axios.get(
-      "http://localhost/Api_desarrollo_web/categorias"
-    );
-    setCategoryListApi(categories.data.body[0]);
-  };
-  const getCategoryByIdApi = async (id) => {
+  const getPurchases = async (id)=>{
     try {
-      const drink = await axios.get(
-        `http://localhost/Api_desarrollo_web/categorias?id=${id}`
-      );
-      let myCategory = await drink.data.body[0];
-      return myCategory;
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const urlPurchase = `http://localhost:8000/api/purchases/${id}`;
+      const purchase = await axios.post(urlPurchase,{},config);
+      return purchase.data;
     } catch (error) {
       console.log(error);
     }
-  };
-  const getDrinkListApi = async () => {
-    try {
-      const drinks = await axios.get(
-        "http://localhost/Api_desarrollo_web/bebidas"
-      );
-      let drinkArray = drinks.data.body[0];
-      setDrinkListApi(drinkArray);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getDrinkByIdApi = async (id) => {
-    try {
-      const drink = await axios.get(
-        `http://localhost/Api_desarrollo_web/bebidas?id=${id}`
-      );
-      let myDrink = drink.data.body[0];
-      return myDrink;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const addDrinkApi = async (drink) => {
-    try {
-      await axios.post("http://localhost/Api_desarrollo_web/bebidas", drink);
-      await getDrinkListApi();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const updateDrinkApi = async (drink, id) => {
-    try {
-      console.log("update metho: drink ", drink);
-      console.log("update metho: id ", id);
-      let drinkData = await getDrinkByIdApi(drink.id_bebida);
-      await axios.put(`http://localhost/Api_desarrollo_web/bebidas?id=${id}`, {
-        cantidad: drink.cantidad,
-        cod_categoria: drink.cod_categoria,
-        descripcion: drink.descripcion,
-        descuento: drink.descuento,
-        grado_acohol: drink.grado_acohol,
-        marca: drink.marca,
-        nombre_bebida: drink.nombre_bebida,
-        puntuacion: drinkData.puntuacion,
-        url: drink.url,
-        volumen: drink.volumen,
-        precio: drink.precio,
-      });
-      await getDrinkListApi();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const deleteDrinkApi = async (id) => {
-    try {
-      await axios.delete(
-        `http://localhost/Api_desarrollo_web/bebidas?id=${id}`
-      );
-      await getDrinkListApi();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }
 
   /* ***************************************************** */
   useEffect(async () => {
     const myToken = localStorage.getItem("token");
     setToken(myToken);
-    console.log("drinkmethods token: ",token)
+    console.log("drinkmethods token: ", token);
     console.log("useEffect DrinkMethodsContext");
     await getData();
     await getDrinksByOS();
     await getCategories();
-    await getDrinkListApi();
-    await getCategoryListApi();
     if (uEffectControl < 1) {
       increaseUFC();
     }
@@ -416,6 +404,9 @@ export const DrinkMethodsProvider = (props) => {
       drinkList,
       getDrinkData,
       getDrinksBy,
+      addDrink,
+      updateDrink,
+      deleteDrink,
       getDiscount,
       getPricePerAmount,
       drinkListOS,
@@ -428,23 +419,15 @@ export const DrinkMethodsProvider = (props) => {
       updateCartControl,
       crudControl,
       updateCrudControl,
-      // Drink API
-      drinkListApi,
-      getDrinkByIdApi,
-      addDrinkApi,
-      updateDrinkApi,
-      deleteDrinkApi,
-      categoryListApi,
-      getCategoryByIdApi,
+      addPurchase,
+      getPurchases
     };
   }, [
     drinkList,
     drinkListOS,
     categoryList,
     cartControl,
-    crudControl,
-    drinkListApi,
-    categoryListApi,
+    crudControl
   ]);
   return (
     <DrinkMethodsContext.Provider value={value}>
