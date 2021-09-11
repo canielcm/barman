@@ -89,6 +89,7 @@ export const DrinkMethodsProvider = (props) => {
 
   const addDrink = async (drink) => {
     try {
+      const token = localStorage.getItem("token");
       const urlDrink = "http://localhost:8000/api/drinks";
       const config = {
         headers: {
@@ -103,6 +104,7 @@ export const DrinkMethodsProvider = (props) => {
   };
   const updateDrink = async (drink, id) => {
     try {
+      const token = localStorage.getItem("token");
       console.log("update metho: drink ", drink);
       console.log("update metho: id ", id);
       const config = {
@@ -118,6 +120,7 @@ export const DrinkMethodsProvider = (props) => {
   };
   const deleteDrink = async (id) => {
     try {
+      const token = localStorage.getItem("token");
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,

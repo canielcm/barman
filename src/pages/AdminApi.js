@@ -25,7 +25,7 @@ const AdminApi = () => {
   const {
     drinkList,
     getDrinkByIdApi,
-    addDrinkApi,
+    addDrink,
     updateDrinkApi,
     deleteDrinkApi,
     categoryList,
@@ -37,15 +37,14 @@ const AdminApi = () => {
   };
   const pushData = (e) => {
     e.preventDefault();
-
-    addDrinkApi(drink);
+    console.log(drink);
+    addDrink(drink);
     document.getElementById("name").value = "";
     document.getElementById("abv").value = 0;
     document.getElementById("amount").value = 0;
     document.getElementById("brand").value = "";
     document.getElementById("discount").value = 0;
     document.getElementById("price").value = 0;
-    document.getElementById("volume").value = 0;
     document.getElementById("urlimgimg").value = "";
     setDrink({
       amount: 0,

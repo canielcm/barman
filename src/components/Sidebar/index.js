@@ -80,7 +80,7 @@ export const Sidebar = (props) => {
               className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
             >
               {nameTitle(element.name)}
-              <span className="badge bg-primary rounded-pill">({element.amount})</span>
+              <span className="badge bg-primary rounded-pill">({element.drinks.length})</span>
             </Link>
           );
         })}
